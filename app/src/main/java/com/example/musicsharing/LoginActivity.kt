@@ -2,6 +2,7 @@ package com.example.musicsharing
 
 import PropertiesReader
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
@@ -17,18 +18,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.musicsharing.ui.theme.MusicSharingTheme
 import androidx.compose.ui.Modifier
 import kotlinx.coroutines.*
-import io.ktor.client.*
-import io.ktor.client.engine.cio.*
-import io.ktor.client.request.*
-import io.ktor.client.statement.*
-import io.ktor.server.application.*
-import io.ktor.server.response.*
-import io.ktor.server.routing.*
-import io.ktor.server.engine.*
-import io.ktor.server.netty.*
+
+import com.spotify.android.appremote.api.ConnectionParams;
+import com.spotify.android.appremote.api.Connector;
+import com.spotify.android.appremote.api.SpotifyAppRemote;
+
+import com.spotify.protocol.client.Subscription;
+import com.spotify.protocol.types.PlayerState;
+import com.spotify.protocol.types.Track;
 
 class LoginActivity : ComponentActivity() {
     private lateinit var clientID: String
+    private var spotifyAppRemote: SpotifyAppRemote? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +41,39 @@ class LoginActivity : ComponentActivity() {
                 LoginScreen(clientID)
             }
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        PropertiesReader.init(this)
+        clientID = PropertiesReader.getProperty("SPOTIFY_CLIENT_ID")
+        val connectionParams = ConnectionParams.Builder(clientID)
+            .setRedirectUri("http://localhost:3000/login")
+            .showAuthView(true)
+            .build()
+
+        SpotifyAppRemote.connect(this, connectionParams, object : Connector.ConnectionListener {
+            override fun onConnected(appRemote: SpotifyAppRemote) {
+                spotifyAppRemote = appRemote
+                Log.d("LoginActivity", "Connected! Yay!")
+                // Now you can start interacting with App Remote
+                connected()
+            }
+
+            override fun onFailure(throwable: Throwable) {
+                Log.e("LoginActivity", throwable.message, throwable)
+                // Something went wrong when attempting to connect! Handle errors here
+            }
+        })
+    }
+
+    private fun connected() {
+        // Then we will write some more code here.
+    }
+
+    override fun onStop() {
+        super.onStop()
+        // Aaand we will finish off here.
     }
 }
 
@@ -69,14 +103,5 @@ fun LoginButton(onClick: () -> Unit) {
 }
 
 suspend fun authorization(clientID: String){
-    embeddedServer(Netty, host = "127.0.0.1", port = 8080) {
-        routing {
-            get("/callback") {
-                call.respondText("Hello, world!")
-            }
-        }
-    }.start(wait = true)
-    /*val client = HttpClient(CIO)
-    val response: HttpResponse = client.get("https://accounts.spotify.com/authorize?")
-    client.close()*/
+
 }
