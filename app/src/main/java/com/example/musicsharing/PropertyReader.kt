@@ -12,7 +12,6 @@ object PropertiesReader {
             properties.load(inputStream)
         } catch (e: Exception) {
             e.printStackTrace()
-            // Handle the exception appropriately (e.g., log an error, throw an exception, etc.)
         }
     }
 
