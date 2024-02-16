@@ -22,55 +22,35 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.musicsharing.ui.theme.MusicSharingTheme
 
 
-@Composable
-fun welcomeScreen() {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = Color(0xFF00889A)),
-        verticalArrangement = Arrangement.Top,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text("Welcome back username!")
-    }
-}
-@Composable
-fun HomeScreen() {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = Color(0xFF00889A)),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text("Welcome back username!")
-    }
-}
-
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GreetingsScreen() {
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text("Hey There", style = MaterialTheme.typography.titleLarge)
+
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(color = Color(0xFF00889A)),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-//        Text(
-//            text = "Hey There",
-//            style = MaterialTheme.typography.titleLarge,
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .align(Alignment.CenterHorizontally)
-//                .padding(top = 50.dp)
-//
-//        )
 
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -86,6 +66,7 @@ fun GreetingsScreen() {
     }
 }
 
+//box content
 @Composable
 fun RectangleBoxContent(boxText: String) {
     RectangleBox(onClick = { /* Handle button click */ }) {
@@ -99,7 +80,11 @@ fun RectangleBoxContent(boxText: String) {
 fun RectangleBox(onClick: () -> Unit, content: @Composable () -> Unit) {
     Box(
         modifier = Modifier
-            .shadow(elevation = 4.dp, spotColor = Color(0x40000000), ambientColor = Color(0x40000000))
+            .shadow(
+                elevation = 4.dp,
+                spotColor = Color(0x40000000),
+                ambientColor = Color(0x40000000)
+            )
             .width(318.dp)
             .height(94.dp)
             .background(color = Color(0x30FFF3E8), shape = RoundedCornerShape(size = 7.dp))
@@ -110,6 +95,21 @@ fun RectangleBox(onClick: () -> Unit, content: @Composable () -> Unit) {
         content()
     }
 }
+
+//titleContent
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun topBar() {
+    TopAppBar(title = {
+        Text(
+            text = "Welcome to Music Sharing App!",
+            style = MaterialTheme.typography.titleLarge,
+            textAlign = TextAlign.Center
+        )
+    })
+}
+
+
 
 @Preview(showBackground = true)
 @Composable

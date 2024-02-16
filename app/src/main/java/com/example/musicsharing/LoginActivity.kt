@@ -1,5 +1,6 @@
 package com.example.musicsharing
 
+import DisplayScreens.MainScreen
 import PropertiesReader
 import android.os.Bundle
 import android.util.Log
@@ -29,7 +30,8 @@ class LoginActivity : ComponentActivity() {
 
         setContent{
             MusicSharingTheme {
-                LoginScreen()
+                MainScreen()
+//                LoginScreen()
             }
         }
     }
