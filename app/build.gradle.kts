@@ -76,6 +76,8 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+
+    //Google Fonts
     implementation("androidx.compose.ui:ui-text-google-fonts:1.6.1")
 
     // Navigation Compose Dependencies

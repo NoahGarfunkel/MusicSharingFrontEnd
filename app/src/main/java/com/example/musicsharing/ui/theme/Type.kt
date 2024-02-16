@@ -1,14 +1,33 @@
 package com.example.musicsharing.ui.theme
 
-import android.R
 import androidx.compose.material3.Typography
-import androidx.compose.ui.graphics.Color
+import androidx.compose.runtime.ComposeCompilerApi
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.googlefonts.Font
+import androidx.compose.ui.text.googlefonts.GoogleFont
+import com.example.musicsharing.R
+
+
+
+
+val provider = GoogleFont.Provider(
+    providerAuthority = "com.google.android.gms.fonts",
+    providerPackage = "com.google.android.gms",
+    certificates = R.array.com_google_android_gms_fonts_certs
+)
+
+val fontName = GoogleFont("Montserrat")
+
+val fontFamily = FontFamily(
+    Font(
+        googleFont = fontName,
+        fontProvider = provider
+    )
+)
+
 
 // Set of Material typography styles to start with
 val Typography = Typography(
@@ -32,13 +51,5 @@ val Typography = Typography(
         fontSize = 11.sp,
         lineHeight = 16.sp,
         letterSpacing = 0.5.sp
-    )
-)
-
-val CustomFonts = TextStyle(
-    fontSize = 20.sp,
-    fontFamily = FontFamily.Default,
-    fontWeight = FontWeight(500),
-    color = Color(0xFFF0FEB8),
-    textAlign = TextAlign.Center,
+    ),
 )
