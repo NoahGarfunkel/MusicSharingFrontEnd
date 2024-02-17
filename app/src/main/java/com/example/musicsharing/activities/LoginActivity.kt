@@ -20,8 +20,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.example.musicsharing.retrofit.api.AccountsApi
 import com.example.musicsharing.retrofit.AccountsRetrofit
+import com.example.musicsharing.retrofit.BackendRetrofit
 import com.example.musicsharing.retrofit.api.WebApi
 import com.example.musicsharing.retrofit.WebRetrofit
+import com.example.musicsharing.retrofit.api.BackendApi
 import com.example.musicsharing.ui.theme.MusicSharingTheme
 import okhttp3.ResponseBody
 import org.json.JSONObject
@@ -34,6 +36,7 @@ class LoginActivity : ComponentActivity() {
     private lateinit var clientSecret: String
     private val accountsApi = AccountsRetrofit().getInstance().create(AccountsApi::class.java)
     private val webApi = WebRetrofit().getInstance().create(WebApi::class.java)
+    private val backendApi = BackendRetrofit().getInstance().create(BackendApi::class.java)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -135,6 +138,8 @@ class LoginActivity : ComponentActivity() {
                 if (response.isSuccessful) {
                     // Log success information
                     Log.d("test", "API call successful: ${response.body()?.string()}")
+                    if (response.body() != null)
+                        backendApi.saveUserInfo(response.body()!!.string())
                 } else {
                     // Log error information
                     Log.e("test", "API call failed with code: ${response.code()}")
