@@ -6,7 +6,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class BackendRetrofit() {
 
-    private val baseUrl = "https://localhost:44323/"
+    private val baseUrl = "http://10.0.2.2:5056/"
 
     private val okHttpClient: OkHttpClient = OkHttpClient()
         .newBuilder()

@@ -139,7 +139,22 @@ class LoginActivity : ComponentActivity() {
                     // Log success information
                     Log.d("test", "API call successful: ${response.body()?.string()}")
                     if (response.body() != null)
-                        backendApi.saveUserInfo(response.body()!!.string())
+                        backendApi.saveUserInfo(response.body()!!.string()).enqueue(object : Callback<ResponseBody> {
+                                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                                    if (response.isSuccessful) {
+                                        // Log success information
+                                        Log.d("Response", "saveUserInfo request successful")
+                                    } else {
+                                        // Log failure information
+                                        Log.e("Response", "saveUserInfo request failed with code: ${response.code()}")
+                                    }
+                                }
+
+                                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                                    // Log failure information
+                                    Log.e("Response", "saveUserInfo request failed: ${t.message}")
+                                }
+                            })
                 } else {
                     // Log error information
                     Log.e("test", "API call failed with code: ${response.code()}")
