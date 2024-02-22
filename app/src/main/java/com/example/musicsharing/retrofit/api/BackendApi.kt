@@ -8,9 +8,9 @@ import retrofit2.http.POST
 
 interface BackendApi {
     @FormUrlEncoded
-    @POST("user/info/save")
+    @POST("User/info/save")
     fun saveUserInfo(
-                 @Field(("userInfo")) grantType:String
+                 @Field(("userInfo")) userInfo:String
                  ): Call<ResponseBody>
 
 }
