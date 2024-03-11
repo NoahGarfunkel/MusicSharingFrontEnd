@@ -62,6 +62,7 @@ fun MusicSharingTheme(
         darkTheme -> DarkColorScheme
         else -> LightColorScheme
     }
+
     val view = LocalView.current
     if (!view.isInEditMode) {
         SideEffect {
@@ -75,6 +76,5 @@ fun MusicSharingTheme(
         colorScheme = colorScheme,
         typography = Typography,
         content = content,
-//        CustomFonts = CustomFonts
     )
 }

@@ -11,15 +11,13 @@ import androidx.compose.ui.text.googlefonts.GoogleFont
 import com.example.musicsharing.R
 
 
-
-
 val provider = GoogleFont.Provider(
     providerAuthority = "com.google.android.gms.fonts",
     providerPackage = "com.google.android.gms",
     certificates = R.array.com_google_android_gms_fonts_certs
 )
 
-val fontName = GoogleFont("Montserrat")
+val fontName = GoogleFont("Oswald")
 
 val fontFamily = FontFamily(
     Font(
@@ -30,14 +28,41 @@ val fontFamily = FontFamily(
 
 
 // Set of Material typography styles to start with
+//val Typography = Typography(
+//    bodyLarge = TextStyle(
+//        fontFamily = fontFamily,
+//        fontWeight = FontWeight.Normal,
+//        fontSize = 16.sp,
+//        lineHeight = 24.sp,
+//        letterSpacing = 0.5.sp
+//    ),
+//    titleLarge = TextStyle(
+//        fontFamily = fontFamily,
+//        fontWeight = FontWeight.Normal,
+//        fontSize = 22.sp,
+//        lineHeight = 28.sp,
+//        letterSpacing = 0.sp
+//    ),
+//    labelSmall = TextStyle(
+//        fontFamily = FontFamily.Default,
+//        fontWeight = FontWeight.Medium,
+//        fontSize = 11.sp,
+//        lineHeight = 16.sp,
+//        letterSpacing = 0.5.sp
+//    ),
+//)
+
+// Set of Material typography styles to start with
 val Typography = Typography(
     bodyLarge = TextStyle(
-        fontFamily = FontFamily.Default,
+        fontFamily = fontFamily,
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp,
         lineHeight = 24.sp,
         letterSpacing = 0.5.sp
-    ),
+    )
+
+    /* Other default text styles to override
     titleLarge = TextStyle(
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Normal,
@@ -51,5 +76,6 @@ val Typography = Typography(
         fontSize = 11.sp,
         lineHeight = 16.sp,
         letterSpacing = 0.5.sp
-    ),
+    )
+    */
 )

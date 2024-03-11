@@ -2,6 +2,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.MaterialTheme.typography
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -26,9 +27,6 @@ fun GreetingsScreen() {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text("Hey There", style = MaterialTheme.typography.titleLarge)
-//        Text(
-//            fontFamily = fontFamily, text = "Hello World!"
-//        )
 
     }
 
@@ -60,7 +58,7 @@ fun GreetingsScreen() {
 fun RectangleBoxContent(boxText: String) {
     RectangleBox(onClick = { /* Handle button click */ }) {
 //        Icon(imageVector = Icons.Default.Add, contentDescription = null)
-        Text(boxText, style = MaterialTheme.typography.bodyLarge)
+        Text(boxText, style = MaterialTheme.typography.bodyMedium, textAlign = TextAlign.Center)
 
     }
 }
