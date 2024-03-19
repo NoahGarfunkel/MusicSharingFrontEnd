@@ -1,7 +1,9 @@
-package com.example.musicsharing
+package com.example.musicsharing.activities
 
 import DisplayScreens.MainScreen
 import PropertiesReader
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -16,17 +18,23 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.example.musicsharing.retrofit.api.AccountsApi
+import com.example.musicsharing.retrofit.AccountsRetrofit
 import com.example.musicsharing.ui.theme.MusicSharingTheme
-import com.spotify.android.appremote.api.ConnectionParams
-import com.spotify.android.appremote.api.Connector
-import com.spotify.android.appremote.api.SpotifyAppRemote
+import okhttp3.ResponseBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class LoginActivity : ComponentActivity() {
     private lateinit var clientID: String
-    private var spotifyAppRemote: SpotifyAppRemote? = null
+    private val accountsApi = AccountsRetrofit().getInstance().create(AccountsApi::class.java)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        PropertiesReader.init(this)
+        clientID = PropertiesReader.getProperty("SPOTIFY_CLIENT_ID")
 
         setContent{
             MusicSharingTheme {
@@ -59,30 +67,22 @@ class LoginActivity : ComponentActivity() {
         }
     }
 
-    private fun authorization(){
-        PropertiesReader.init(this)
-        clientID = PropertiesReader.getProperty("SPOTIFY_CLIENT_ID")
-        val connectionParams = ConnectionParams.Builder(clientID)
-            .setRedirectUri("http://localhost:3000/login")
-            .showAuthView(true)
-            .build()
-
-        SpotifyAppRemote.connect(this, connectionParams, object : Connector.ConnectionListener {
-            override fun onConnected(appRemote: SpotifyAppRemote) {
-                spotifyAppRemote = appRemote
-                Log.d("LoginActivity", "Connected! Yay!")
+    private fun authorization() {
+        val authCall = accountsApi.requestAuth(clientID, "code", "music-sharing://account-creation")
+        authCall.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.isSuccessful) {
+                    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(response.raw().request.url.toString()))
+                    startActivity(browserIntent)
+                } else {
+                    Log.e("authorization", "API call failed with code: ${response.code()}")
+                }
             }
 
-            override fun onFailure(throwable: Throwable) {
-                Log.e("LoginActivity", throwable.message, throwable)
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                Log.e("authorization", "API call failed with exception: ${t.message}")
             }
         })
     }
-
-    override fun onStop() {
-        super.onStop()
-        spotifyAppRemote?.let {
-            SpotifyAppRemote.disconnect(it)
-        }
-    }
 }
+
