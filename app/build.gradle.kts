@@ -77,6 +77,8 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
+    //coil
+    implementation ("io.coil-kt:coil-compose:2.4.0")
     //Google Fonts
     implementation("androidx.compose.ui:ui-text-google-fonts:1.6.1")
 
@@ -87,4 +89,8 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:$nav_version")
     implementation("androidx.navigation:navigation-dynamic-features-fragment:$nav_version")
     androidTestImplementation("androidx.navigation:navigation-testing:$nav_version")
+
+
+
+
 }
