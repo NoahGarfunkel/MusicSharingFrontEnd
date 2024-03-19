@@ -14,6 +14,8 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
+import com.example.musicsharing.R
+
 
 private val DarkColorScheme = darkColorScheme(
     primary = Purple80,
@@ -37,6 +39,13 @@ private val LightColorScheme = lightColorScheme(
     */
 )
 
+//val provider = GoogleFont.Provider(
+//    providerAuthority = "com.google.android.gms.fonts",
+//    providerPackage = "com.google.android.gms",
+//    certificates = R.array.com_google_android_gms_fonts_certs
+//)
+
+
 @Composable
 fun MusicSharingTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
@@ -53,6 +62,7 @@ fun MusicSharingTheme(
         darkTheme -> DarkColorScheme
         else -> LightColorScheme
     }
+
     val view = LocalView.current
     if (!view.isInEditMode) {
         SideEffect {
@@ -65,6 +75,6 @@ fun MusicSharingTheme(
     MaterialTheme(
         colorScheme = colorScheme,
         typography = Typography,
-        content = content
+        content = content,
     )
 }
