@@ -3,11 +3,13 @@ package com.example.musicsharing.activities
 import PropertiesReader
 import android.content.Context
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Base64
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -31,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import com.example.musicsharing.classes.UserInfo
+import com.example.musicsharing.displayScreens.HomeScreen
 import com.example.musicsharing.retrofit.api.AccountsApi
 import com.example.musicsharing.retrofit.AccountsRetrofit
 import com.example.musicsharing.retrofit.BackendRetrofit
@@ -55,6 +58,7 @@ class AccountCreationActivity : ComponentActivity() {
     private val webApi = WebRetrofit().getInstance().create(WebApi::class.java)
     private val backendApi = BackendRetrofit().getInstance().create(BackendApi::class.java)
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

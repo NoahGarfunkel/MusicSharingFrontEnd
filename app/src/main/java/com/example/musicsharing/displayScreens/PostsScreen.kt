@@ -32,7 +32,7 @@ fun SocialMediaPostScreen() {
         // Display posts in reverse order, newest at the top
         LazyColumn(modifier = Modifier.weight(1f)) {
             itemsIndexed(posts.reversed()) { index, post ->
-                PostItem(post)
+                PostItem(username = "User123", postContent = post)
             }
         }
 
@@ -66,19 +66,30 @@ fun SocialMediaPostScreen() {
     }
 }
 
-@Composable
-fun PostItem(post: String) {
-    Card(modifier = Modifier.padding(8.dp), elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)) {
-        Text(post, modifier = Modifier.padding(8.dp))
-    }
-}
-
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun getCurrentTimestamp(): String {
-    val instant = Instant.now()
-    val formatter = DateTimeFormatter.ofPattern("MMM dd, yyyy HH:mm").withZone(ZoneId.systemDefault())
-    return formatter.format(instant)
+fun PostItem(username: String, postContent: String) {
+    Card(
+        modifier = Modifier.padding(8.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+    ) {
+        Column(modifier = Modifier.padding(8.dp)) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = username,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.weight(1f)
+                )
+            }
+            Text(postContent, style = MaterialTheme.typography.bodyLarge)
+        }
+    }
 }
 
 @RequiresApi(Build.VERSION_CODES.O)

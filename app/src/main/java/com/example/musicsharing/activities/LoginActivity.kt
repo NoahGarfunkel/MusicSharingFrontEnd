@@ -5,10 +5,12 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -19,6 +21,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.example.musicsharing.displayScreens.HomeScreen
 import com.example.musicsharing.retrofit.api.AccountsApi
 import com.example.musicsharing.retrofit.AccountsRetrofit
 import com.example.musicsharing.ui.theme.MusicSharingTheme
@@ -34,6 +37,7 @@ class LoginActivity : ComponentActivity() {
     private lateinit var sharedPreferences: SharedPreferences
     private val accountsApi = AccountsRetrofit().getInstance().create(AccountsApi::class.java)
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
