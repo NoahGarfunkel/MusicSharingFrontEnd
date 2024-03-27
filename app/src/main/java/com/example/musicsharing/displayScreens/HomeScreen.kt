@@ -65,54 +65,6 @@ import com.example.musicsharing.ui.theme.BottomNavGraph
         }
 }
 
-//@Composable
-//fun Screen1(navController: NavHostController){
-//    Column (
-//        horizontalAlignment = Alignment.CenterHorizontally,
-//        verticalArrangement = Arrangement.Center,
-//        modifier = Modifier
-//            .fillMaxSize()
-//    ) {
-//        Text(
-//            text = "Screen 1",
-//            color = Color.Blue,
-//            fontWeight = FontWeight.Bold,
-//            fontSize = 40.sp,
-//        )
-//        Button(onClick = {
-//            navController.navigate("second_screen")
-//        }
-//        ) {
-//            Text(text = "Change Screen")
-//        }
-//    }
-//}
-
-//@Composable
-//fun Screen2(navController: NavHostController){
-//    Column (
-//        horizontalAlignment = Alignment.CenterHorizontally,
-//        verticalArrangement = Arrangement.Center,
-//        modifier = Modifier
-//            .fillMaxSize()
-//            .background(Color.Green)
-//    ) {
-//        Text(
-//            text = "Screen 1",
-//            color = Color.White,
-//            fontWeight = FontWeight.Bold,
-//            fontSize = 40.sp,
-//        )
-//        Button(onClick = {
-//
-//        }
-//        ) {
-//            Text(text = "Change Screen")
-//        }
-//    }
-//}
-
-
 @Composable
 fun BottomBar(navController : NavHostController){
     val screen = listOf(
