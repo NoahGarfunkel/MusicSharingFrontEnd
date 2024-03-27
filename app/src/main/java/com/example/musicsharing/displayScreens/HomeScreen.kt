@@ -2,19 +2,35 @@ package com.example.musicsharing.displayScreens
 
 import android.annotation.SuppressLint
 import android.os.Build
+import android.text.Layout
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph
 import androidx.navigation.NavGraphNavigator
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.musicsharing.classes.BottomBarScreen
@@ -22,15 +38,80 @@ import com.example.musicsharing.ui.theme.BottomNavGraph
 
 @RequiresApi(Build.VERSION_CODES.O)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+
+
 @Composable
-fun HomeScreen(){
-    val navController = rememberNavController()
-    Scaffold(
-        bottomBar = {}
-    ) {
-        BottomNavGraph(navController = navController)
-    }
+    fun HomeScreen(navController: NavHostController){
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Text(
+                text = "Home Screen",
+                fontSize = 20.sp
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Button(onClick = {
+                navController.navigate("posts")
+            }) {
+                Text(
+                    text = "Go to Posts Screen",
+                    fontSize = 20.sp
+                )
+            }
+        }
 }
+
+//@Composable
+//fun Screen1(navController: NavHostController){
+//    Column (
+//        horizontalAlignment = Alignment.CenterHorizontally,
+//        verticalArrangement = Arrangement.Center,
+//        modifier = Modifier
+//            .fillMaxSize()
+//    ) {
+//        Text(
+//            text = "Screen 1",
+//            color = Color.Blue,
+//            fontWeight = FontWeight.Bold,
+//            fontSize = 40.sp,
+//        )
+//        Button(onClick = {
+//            navController.navigate("second_screen")
+//        }
+//        ) {
+//            Text(text = "Change Screen")
+//        }
+//    }
+//}
+
+//@Composable
+//fun Screen2(navController: NavHostController){
+//    Column (
+//        horizontalAlignment = Alignment.CenterHorizontally,
+//        verticalArrangement = Arrangement.Center,
+//        modifier = Modifier
+//            .fillMaxSize()
+//            .background(Color.Green)
+//    ) {
+//        Text(
+//            text = "Screen 1",
+//            color = Color.White,
+//            fontWeight = FontWeight.Bold,
+//            fontSize = 40.sp,
+//        )
+//        Button(onClick = {
+//
+//        }
+//        ) {
+//            Text(text = "Change Screen")
+//        }
+//    }
+//}
+
 
 @Composable
 fun BottomBar(navController : NavHostController){

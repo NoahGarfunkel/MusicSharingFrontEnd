@@ -8,7 +8,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.musicsharing.classes.BottomBarScreen
-import com.example.musicsharing.displayScreens.HomeScreen
 import com.example.musicsharing.displayScreens.SocialMediaPostScreen
 import profileScreen
 
@@ -16,12 +15,13 @@ import profileScreen
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun BottomNavGraph(navController : NavHostController) {
-    NavHost (navController = navController,
+    NavHost (
+        navController = navController,
         startDestination = BottomBarScreen.Home.route
     ) {
-        composable(route = BottomBarScreen.Home.route){
-            HomeScreen()
-        }
+//        composable(route = BottomBarScreen.Home.route){
+//            HomeScreen()
+//        }
         composable(route = BottomBarScreen.Profile.route){
             profileScreen()
         }
@@ -29,6 +29,9 @@ fun BottomNavGraph(navController : NavHostController) {
             SocialMediaPostScreen()
         }
     }
-
 }
+
+
+
+
 

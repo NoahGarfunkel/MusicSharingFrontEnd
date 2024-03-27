@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -29,14 +30,11 @@ fun SocialMediaPostScreen() {
             .background(color = Color(0xFF00889A))
 
     ) {
-        // Display posts in reverse order, newest at the top
         LazyColumn(modifier = Modifier.weight(1f)) {
             itemsIndexed(posts.reversed()) { index, post ->
                 PostItem(username = "User123", postContent = post)
             }
         }
-
-        // Input field and button for creating a new post at the bottom
         Column(
             modifier = Modifier
                 .background(Color.White)

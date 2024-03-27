@@ -27,7 +27,7 @@ fun profileScreen() {
         )
 
         Text(
-            text = "janedoe@example.com",
+            text = "username",
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.padding(top = 4.dp)
