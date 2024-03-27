@@ -55,7 +55,7 @@ fun profileScreen() {
                 Icon(
                     imageVector = Icons.Default.Edit,
                     contentDescription = "Edit Profile",
-                    tint = Color.White // Cha
+                    tint =  Color(0xFFFBFFDC) // Cha
                 )
             }
         }
