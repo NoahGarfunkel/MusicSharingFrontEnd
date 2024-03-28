@@ -35,17 +35,19 @@ fun SocialMediaPostScreen() {
                 PostItem(username = "User123", postContent = post)
             }
         }
-        Column(
+        Row(
             modifier = Modifier
                 .background(Color.White)
                 .navigationBarsPadding()
                 .padding(16.dp)
+                .fillMaxWidth(),
         ) {
             OutlinedTextField(
                 value = postText,
                 onValueChange = { postText = it },
                 label = { Text("What's on your mind?") },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .width(250.dp)
             )
             Spacer(modifier = Modifier.height(8.dp))
             Button(
@@ -55,8 +57,13 @@ fun SocialMediaPostScreen() {
                         postText = ""
                     }
                 },
+                colors = ButtonDefaults.buttonColors(Color(0xFF00889A)),
+//                verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
-                    .align(Alignment.End)
+                    .padding(start = 20.dp,top = 10.dp)
+
+//                    .align(Alignment.End)
+//                    .align(Alignment.C)
             ) {
                 Text("Post")
             }
@@ -64,31 +71,6 @@ fun SocialMediaPostScreen() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
-@Composable
-fun PostItem(username: String, postContent: String) {
-    Card(
-        modifier = Modifier.padding(8.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-    ) {
-        Column(modifier = Modifier.padding(8.dp)) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 8.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = username,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.weight(1f)
-                )
-            }
-            Text(postContent, style = MaterialTheme.typography.bodyLarge)
-        }
-    }
-}
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true)
