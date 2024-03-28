@@ -58,12 +58,8 @@ fun SocialMediaPostScreen() {
                     }
                 },
                 colors = ButtonDefaults.buttonColors(Color(0xFF00889A)),
-//                verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .padding(start = 20.dp,top = 10.dp)
-
-//                    .align(Alignment.End)
-//                    .align(Alignment.C)
             ) {
                 Text("Post")
             }
