@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Card
@@ -54,7 +55,8 @@ fun PostItem(username: String, postContent: String) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(Color(0xFF309CA9))
-                    .padding(bottom = 8.dp),
+                    .height(50.dp),
+//                    .padding(bottom = 8.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
@@ -64,7 +66,7 @@ fun PostItem(username: String, postContent: String) {
                     color = Color.White,
                     modifier = Modifier
                         .weight(1f)
-                        .padding(top = 17.dp, start = 10.dp, bottom = 5.dp)
+                        .padding(start = 10.dp, top = 5.dp, end = 50.dp)
 
 
                 )

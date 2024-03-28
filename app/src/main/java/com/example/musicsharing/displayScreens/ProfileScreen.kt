@@ -18,6 +18,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.sp
@@ -33,7 +34,7 @@ fun profileScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-          .background(color = Color(0xFF00889A))
+          .background(color = Color(0xFFFFF3E8))
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -55,7 +56,7 @@ fun profileScreen() {
                 Icon(
                     imageVector = Icons.Default.Edit,
                     contentDescription = "Edit Profile",
-                    tint =  Color(0xFFFBFFDC) // Cha
+                    tint =  Color(0xFF309CA9) // Cha
                 )
             }
         }
@@ -66,6 +67,7 @@ fun profileScreen() {
             modifier = Modifier
                 .padding(top = 5.dp)
                 .size(200.dp)
+                .shadow(5.dp, CircleShape)
                 .clip(CircleShape),
             contentScale = ContentScale.Crop
         )
@@ -88,13 +90,22 @@ fun profileScreen() {
 
             )
 
+            HorizontalDivider(
+                modifier = Modifier
+                    .width(350.dp)
+                    .padding(start = 20.dp,end = 20.dp, top = 5.dp)// Make the divider take up the full width
+                    .padding(vertical = 70.dp), // Add some vertical padding
+                thickness = 1.dp, // Set the thickness of the divider
+                color = Color.White // Set the color of the divider
+            )
+
             Text(
                 text = name,
                 style = MaterialTheme.typography.bodyLarge,
                 fontSize = 17.sp,
                 color = Color(0xFFFBFFDC),
                 modifier = Modifier
-                    .padding(top = 80.dp)
+                    .padding(top = 85.dp)
                     .align(Alignment.TopCenter)
 
             )

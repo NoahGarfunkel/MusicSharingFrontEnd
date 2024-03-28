@@ -81,7 +81,6 @@ class AccountCreationActivity : ComponentActivity() {
             MusicSharingTheme {
                 val navController = rememberNavController()
                 NavHost(navController = navController,
-//                    startDestination = "accountCreationScreen"
                     startDestination = "AppNavigation"
                 ) {
                     composable("login") {

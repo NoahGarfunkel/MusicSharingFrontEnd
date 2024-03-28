@@ -27,7 +27,7 @@ fun SocialMediaPostScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = Color(0xFF00889A))
+            .background(color = Color(0xFFFFF3E8))
 
     ) {
         LazyColumn(modifier = Modifier.weight(1f)) {

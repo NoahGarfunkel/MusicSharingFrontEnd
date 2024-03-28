@@ -19,13 +19,14 @@ val listOfNavItems = listOf(
         route = Screens.GreetingsScreen.name
     ),
     NavItems(
-        label ="Profile",
-        icon = Icons.Default.Person,
-        route = Screens.ProfileScreen.name
-    ),
-    NavItems(
         label = "Posts",
         icon = Icons.Default.Add,
         route = Screens.PostsScreen.name
     ),
+    NavItems(
+        label ="Profile",
+        icon = Icons.Default.Person,
+        route = Screens.ProfileScreen.name
+    ),
+
 )
