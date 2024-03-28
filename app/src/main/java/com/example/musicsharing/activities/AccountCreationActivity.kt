@@ -32,14 +32,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import com.example.musicsharing.classes.UserInfo
-import com.example.musicsharing.displayScreens.GreetingsScreen
-import com.example.musicsharing.displayScreens.SocialMediaPostScreen
-import com.example.musicsharing.navigation.AppNavigation
 import com.example.musicsharing.retrofit.api.AccountsApi
 import com.example.musicsharing.retrofit.AccountsRetrofit
 import com.example.musicsharing.retrofit.BackendRetrofit
@@ -79,15 +72,13 @@ class AccountCreationActivity : ComponentActivity() {
 
         setContent{
             MusicSharingTheme {
-                AccountCreationScreen(navController = rememberNavController())
+                AccountCreationScreen()
             }
         }
     }
 
-
-    @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    fun AccountCreationScreen(navController : NavHostController){
+    fun AccountCreationScreen(){
         Surface(
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
@@ -123,7 +114,6 @@ class AccountCreationActivity : ComponentActivity() {
 
                 Button(
                     onClick = {
-                        navController.navigate("posts")
                         code?.let { getToken(it, userName) }
                     },
                     modifier = Modifier.fillMaxWidth()
