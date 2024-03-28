@@ -77,6 +77,5 @@ fun AppNavigation() {
                     GreetingsScreen()
                 }
             }
-
         }
 }

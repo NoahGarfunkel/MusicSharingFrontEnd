@@ -28,5 +28,4 @@ val listOfNavItems = listOf(
         icon = Icons.Default.Person,
         route = Screens.ProfileScreen.name
     ),
-
 )

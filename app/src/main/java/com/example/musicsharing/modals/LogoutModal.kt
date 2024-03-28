@@ -123,9 +123,7 @@ fun LogoutDialog() {
                             Text(text = "No")
                         }
                     }
-
                 }
-
             }
         }
     }

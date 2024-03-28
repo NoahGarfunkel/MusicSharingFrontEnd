@@ -36,7 +36,6 @@ class LoginActivity : ComponentActivity() {
     private lateinit var sharedPreferences: SharedPreferences
     private val accountsApi = AccountsRetrofit().getInstance().create(AccountsApi::class.java)
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

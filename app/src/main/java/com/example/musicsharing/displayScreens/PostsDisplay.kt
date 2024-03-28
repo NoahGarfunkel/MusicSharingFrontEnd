@@ -41,7 +41,7 @@ fun PostItem(username: String, postContent: String) {
     Card(
         modifier = Modifier
             .padding(8.dp)
-            .fillMaxWidth()// Makes the card take up the full width of its parent
+            .fillMaxWidth()
             .height(150.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
 
@@ -87,23 +87,21 @@ fun PostItem(username: String, postContent: String) {
                     .fillMaxWidth()
                     .padding(bottom = 8.dp, start = 10.dp, end = 10.dp)
                     .drawWithContent {
-                        drawContent() // Draw the original content of the Row
+                        drawContent()
                         drawLine(
-                            color = (Color(0xFF00889A)), // Set the color of the border
-                            strokeWidth = 1.dp.toPx(), // Set the thickness of the border
-                            start = Offset(x = 0f, y = 0f), // Start from the top left corner
-                            end = Offset(x = size.width, y = 0f) // Draw to the top right corner
+                            color = (Color(0xFF00889A)),
+                            strokeWidth = 1.dp.toPx(),
+                            start = Offset(x = 0f, y = 0f),
+                            end = Offset(x = size.width, y = 0f)
                         )
                     },
 
                 verticalAlignment = Alignment.Bottom
             ) {
-
-                // likes button
                 IconButton(
 
                     onClick = {
-                        likes += if (isLiked) -1 else 1 // Toggle the like state
+                        likes += if (isLiked) -1 else 1
                         isLiked = !isLiked
                     },
                     modifier = Modifier

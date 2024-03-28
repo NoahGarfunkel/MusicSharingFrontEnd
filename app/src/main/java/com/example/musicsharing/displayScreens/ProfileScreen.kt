@@ -59,7 +59,7 @@ fun profileScreen() {
                 Icon(
                     imageVector = Icons.Default.Edit,
                     contentDescription = "Edit Profile",
-                    tint =  Color(0xFF309CA9) // Cha
+                    tint =  Color(0xFF309CA9)
                 )
             }
         }
@@ -96,10 +96,10 @@ fun profileScreen() {
             HorizontalDivider(
                 modifier = Modifier
                     .width(350.dp)
-                    .padding(start = 20.dp,end = 20.dp, top = 5.dp)// Make the divider take up the full width
-                    .padding(vertical = 70.dp), // Add some vertical padding
-                thickness = 1.dp, // Set the thickness of the divider
-                color = Color.White // Set the color of the divider
+                    .padding(start = 20.dp,end = 20.dp, top = 5.dp)
+                    .padding(vertical = 70.dp),
+                thickness = 1.dp,
+                color = Color.White
             )
 
             Text(
@@ -136,7 +136,7 @@ fun profileScreen() {
 
             }
             if (showDialog) {
-                LogoutDialog() // Show the dialog if showDialog is true
+                LogoutDialog()
             }
 
             }
