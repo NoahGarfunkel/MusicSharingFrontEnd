@@ -58,7 +58,6 @@ dependencies {
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
-    implementation ("androidx.compose.material:material-icons-extended:<version>")
 
     //retrofit, gson, okhttp3
     implementation("com.google.code.gson:gson:2.10.1")
@@ -66,6 +65,8 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
     implementation("androidx.navigation:navigation-runtime-ktx:2.7.7")
+//    implementation("androidx.compose.material3:material3-android:1.2.1")
+    implementation("androidx.compose.material3:material3:1.2.1")
     //test, debug
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

@@ -37,8 +37,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.musicsharing.classes.UserInfo
-import com.example.musicsharing.displayScreens.HomeScreen
+import com.example.musicsharing.displayScreens.GreetingsScreen
 import com.example.musicsharing.displayScreens.SocialMediaPostScreen
+import com.example.musicsharing.navigation.AppNavigation
 import com.example.musicsharing.retrofit.api.AccountsApi
 import com.example.musicsharing.retrofit.AccountsRetrofit
 import com.example.musicsharing.retrofit.BackendRetrofit
@@ -80,7 +81,8 @@ class AccountCreationActivity : ComponentActivity() {
             MusicSharingTheme {
                 val navController = rememberNavController()
                 NavHost(navController = navController,
-                    startDestination = "accountCreationScreen"
+//                    startDestination = "accountCreationScreen"
+                    startDestination = "AppNavigation"
                 ) {
                     composable("login") {
                         LoginActivity()
@@ -89,10 +91,13 @@ class AccountCreationActivity : ComponentActivity() {
                         SocialMediaPostScreen()
                     }
                     composable("home") {
-                        HomeScreen(navController = navController)
+                        GreetingsScreen()
                     }
                     composable("accountCreationScreen") {
                         AccountCreationScreen(navController = navController)
+                    }
+                    composable("AppNavigation") {
+                        AppNavigation()
                     }
                 }
             }
