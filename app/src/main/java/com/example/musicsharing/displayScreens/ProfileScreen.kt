@@ -1,3 +1,5 @@
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.*
@@ -23,9 +25,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.sp
 import com.example.musicsharing.R
+import com.example.musicsharing.modals.LogoutDialog
 
 
-
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun profileScreen() {
     var name by remember { mutableStateOf("My Name")} // Initial name
@@ -111,7 +114,9 @@ fun profileScreen() {
             )
 
             Button(
-                onClick = { /* ADD LOGOUT FUNCTIONALITY HERE */ },
+                onClick = {
+                    showDialog = true
+                          },
                 modifier = Modifier
                     .padding(16.dp)
                     .align(Alignment.BottomEnd)
@@ -130,6 +135,9 @@ fun profileScreen() {
 
 
             }
+            if (showDialog) {
+                LogoutDialog() // Show the dialog if showDialog is true
+            }
 
             }
 
@@ -137,11 +145,8 @@ fun profileScreen() {
 
     }
 
-fun editProfile() {
 
-}
-
-
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true)
 @Composable
 fun ProfileScreenPreview() {

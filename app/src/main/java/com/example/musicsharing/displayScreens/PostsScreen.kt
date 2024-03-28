@@ -24,6 +24,8 @@ fun SocialMediaPostScreen() {
     val posts = remember { mutableStateListOf<String>() }
     var postText by remember { mutableStateOf("") }
 
+
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -32,7 +34,7 @@ fun SocialMediaPostScreen() {
     ) {
         LazyColumn(modifier = Modifier.weight(1f)) {
             itemsIndexed(posts.reversed()) { index, post ->
-                PostItem(username = "User123", postContent = post)
+                PostItem(username = "Morgan Weltzer", postContent = post)
             }
         }
         Row(
