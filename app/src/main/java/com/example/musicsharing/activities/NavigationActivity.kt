@@ -11,7 +11,6 @@ import androidx.navigation.compose.rememberNavController
 import com.example.musicsharing.displayScreens.GreetingsScreen
 import com.example.musicsharing.displayScreens.SocialMediaPostScreen
 import com.example.musicsharing.navigation.AppNavigation
-import com.example.musicsharing.navigation.Screens
 import com.example.musicsharing.ui.theme.MusicSharingTheme
 
 class NavigationActivity : ComponentActivity() {
