@@ -1,12 +1,16 @@
 package com.example.musicsharing.activities
 
 import PropertiesReader
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -25,8 +29,11 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+private const val KEY_LOGGED_IN = "isLoggedIn"
+
 class LoginActivity : ComponentActivity() {
     private lateinit var clientID: String
+    private lateinit var sharedPreferences: SharedPreferences
     private val accountsApi = AccountsRetrofit().getInstance().create(AccountsApi::class.java)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,9 +42,15 @@ class LoginActivity : ComponentActivity() {
         PropertiesReader.init(this)
         clientID = PropertiesReader.getProperty("SPOTIFY_CLIENT_ID")
 
-        setContent{
-            MusicSharingTheme {
-                LoginScreen()
+        sharedPreferences = getSharedPreferences("login_prefs", Context.MODE_PRIVATE)
+
+        if (sharedPreferences.getBoolean(KEY_LOGGED_IN, false)) {
+            startActivity(Intent(this, TestActivity::class.java))
+        } else {
+            setContent{
+                MusicSharingTheme {
+                    LoginScreen()
+                }
             }
         }
     }

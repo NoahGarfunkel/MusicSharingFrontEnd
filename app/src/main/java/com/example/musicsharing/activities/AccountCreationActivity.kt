@@ -1,12 +1,15 @@
 package com.example.musicsharing.activities
 
 import PropertiesReader
+import android.content.Context
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Base64
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -44,6 +47,8 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+private const val KEY_LOGGED_IN = "isLoggedIn"
+
 class AccountCreationActivity : ComponentActivity() {
     private lateinit var clientID: String
     private lateinit var clientSecret: String
@@ -52,6 +57,7 @@ class AccountCreationActivity : ComponentActivity() {
     private val webApi = WebRetrofit().getInstance().create(WebApi::class.java)
     private val backendApi = BackendRetrofit().getInstance().create(BackendApi::class.java)
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -71,7 +77,6 @@ class AccountCreationActivity : ComponentActivity() {
         }
     }
 
-    @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     fun AccountCreationScreen(){
         Surface(
@@ -156,12 +161,18 @@ class AccountCreationActivity : ComponentActivity() {
                             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                                 if (response.isSuccessful) {
                                     Log.d("saveUserInfo", "saveUserInfo request successful")
+                                    val sharedPreferences = getSharedPreferences("login_prefs", Context.MODE_PRIVATE)
+                                    sharedPreferences.edit().putBoolean(KEY_LOGGED_IN, true).apply()
                                 } else {
                                     Log.e("Response", "saveUserInfo request failed with code: ${response.code()}")
                                 }
                             }
 
                             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                                /*val sharedPreferences = getSharedPreferences("login_prefs", Context.MODE_PRIVATE)
+                                sharedPreferences.edit().putBoolean(KEY_LOGGED_IN, true).apply()
+                                val isLoggedIn = sharedPreferences.getBoolean(KEY_LOGGED_IN, false)
+                                Log.d("test", "isLoggedIn: $isLoggedIn")*/
                                 Log.e("saveUserInfo", "saveUserInfo request failed: ${t.message}")
                             }
                         })
