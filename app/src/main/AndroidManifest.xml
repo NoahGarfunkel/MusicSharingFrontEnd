@@ -41,13 +41,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.TestActivity"
+            android:name=".activities.NavigationActivity"
             android:exported="true"
             android:theme="@style/Theme.MusicSharing">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
                 <data android:scheme="music-sharing" />
-                <data android:path="/test" />
+                <data android:path="/navigation" />
             </intent-filter>
         </activity>
     </application>

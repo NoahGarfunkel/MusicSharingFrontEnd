@@ -2,6 +2,7 @@ package com.example.musicsharing.activities
 
 import PropertiesReader
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -19,7 +20,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -56,6 +56,7 @@ class AccountCreationActivity : ComponentActivity() {
     private val accountsApi = AccountsRetrofit().getInstance().create(AccountsApi::class.java)
     private val webApi = WebRetrofit().getInstance().create(WebApi::class.java)
     private val backendApi = BackendRetrofit().getInstance().create(BackendApi::class.java)
+    private val currentActivity = this
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -160,19 +161,18 @@ class AccountCreationActivity : ComponentActivity() {
                         backendApi.saveUserInfo(json).enqueue(object : Callback<ResponseBody> {
                             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                                 if (response.isSuccessful) {
-                                    Log.d("saveUserInfo", "saveUserInfo request successful")
                                     val sharedPreferences = getSharedPreferences("login_prefs", Context.MODE_PRIVATE)
                                     sharedPreferences.edit().putBoolean(KEY_LOGGED_IN, true).apply()
+                                    startActivity(Intent(currentActivity, NavigationActivity::class.java))
                                 } else {
                                     Log.e("Response", "saveUserInfo request failed with code: ${response.code()}")
                                 }
                             }
 
                             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                                /*val sharedPreferences = getSharedPreferences("login_prefs", Context.MODE_PRIVATE)
+                                val sharedPreferences = getSharedPreferences("login_prefs", Context.MODE_PRIVATE)
                                 sharedPreferences.edit().putBoolean(KEY_LOGGED_IN, true).apply()
-                                val isLoggedIn = sharedPreferences.getBoolean(KEY_LOGGED_IN, false)
-                                Log.d("test", "isLoggedIn: $isLoggedIn")*/
+                                startActivity(Intent(currentActivity, NavigationActivity::class.java))
                                 Log.e("saveUserInfo", "saveUserInfo request failed: ${t.message}")
                             }
                         })

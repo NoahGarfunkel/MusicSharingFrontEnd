@@ -29,7 +29,7 @@ import com.example.musicsharing.modals.LogoutDialog
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun profileScreen() {
+fun profileScreen(signOut: () -> Unit) {
     var name by remember { mutableStateOf("My Name")} // Initial name
     var showDialog by remember { mutableStateOf(false) }
 
@@ -135,7 +135,7 @@ fun profileScreen() {
 
             }
             if (showDialog) {
-                LogoutDialog()
+                LogoutDialog(signOut)
             }
 
             }
@@ -144,10 +144,10 @@ fun profileScreen() {
 
     }
 
-
+/*
 @RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true)
 @Composable
 fun ProfileScreenPreview() {
     profileScreen()
-}
+}*/

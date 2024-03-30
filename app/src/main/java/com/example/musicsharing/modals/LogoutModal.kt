@@ -35,7 +35,7 @@ import androidx.navigation.compose.rememberNavController
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun LogoutDialog() {
+fun LogoutDialog(signOut: () -> Unit) {
     var showDialog by remember { mutableStateOf(true) } // Control the visibility of the dialog
 
     if (showDialog) {
@@ -95,7 +95,7 @@ fun LogoutDialog() {
                         Button(
                             colors = ButtonDefaults.buttonColors(Color(0xFF309CA9)),
                             onClick = {
-                                navController.navigate("loginScreen")
+                                signOut()
                                 showDialog = false
                                       },
                             modifier = Modifier
@@ -125,9 +125,10 @@ fun LogoutDialog() {
     }
 }
 
+/*
 @RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true)
 @Composable
 fun PreviewLogoutModal() {
     LogoutDialog()
-}
+}*/
