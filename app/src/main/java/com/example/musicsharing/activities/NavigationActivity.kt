@@ -18,7 +18,6 @@ import com.example.musicsharing.ui.theme.MusicSharingTheme
 private const val KEY_LOGGED_IN = "isLoggedIn"
 
 class NavigationActivity : ComponentActivity() {
-
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
