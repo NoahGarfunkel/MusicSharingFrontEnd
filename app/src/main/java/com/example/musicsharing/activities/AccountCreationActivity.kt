@@ -172,8 +172,8 @@ class AccountCreationActivity : ComponentActivity() {
                             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                                 /*val sharedPreferences = getSharedPreferences("login_prefs", Context.MODE_PRIVATE)
                                 sharedPreferences.edit().putBoolean(KEY_LOGGED_IN, true).apply()
-                                startActivity(Intent(currentActivity, NavigationActivity::class.java))
-                                Log.e("saveUserInfo", "saveUserInfo request failed: ${t.message}")*/
+                                startActivity(Intent(currentActivity, NavigationActivity::class.java))*/
+                                Log.e("saveUserInfo", "saveUserInfo request failed: ${t.message}")
                             }
                         })
                     }
