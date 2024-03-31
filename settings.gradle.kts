@@ -15,3 +15,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "MusicSharing"
 include(":app")
+include(":app:payload_methods_frontend")
