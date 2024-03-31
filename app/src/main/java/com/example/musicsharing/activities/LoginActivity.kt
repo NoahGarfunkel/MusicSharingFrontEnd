@@ -5,12 +5,10 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -45,7 +43,7 @@ class LoginActivity : ComponentActivity() {
         sharedPreferences = getSharedPreferences("login_prefs", Context.MODE_PRIVATE)
 
         if (sharedPreferences.getBoolean(KEY_LOGGED_IN, false)) {
-            startActivity(Intent(this, TestActivity::class.java))
+            startActivity(Intent(this, NavigationActivity::class.java))
         } else {
             setContent{
                 MusicSharingTheme {
