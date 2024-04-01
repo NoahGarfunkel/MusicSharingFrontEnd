@@ -1,6 +1,5 @@
 package com.example.musicsharing.retrofit.api
 
-import com.example.musicsharing.classes.UserInfo
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.Body
