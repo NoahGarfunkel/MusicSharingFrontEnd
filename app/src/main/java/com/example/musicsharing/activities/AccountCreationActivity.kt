@@ -165,7 +165,8 @@ class AccountCreationActivity : ComponentActivity() {
                                     sharedPreferences.edit().putBoolean(KEY_LOGGED_IN, true).apply()
                                     startActivity(Intent(currentActivity, NavigationActivity::class.java))
                                 } else {
-                                    Log.e("Response", "saveUserInfo request failed with code: ${response.code()}")
+                                    Log.e("Response", "saveUserInfo request failed with code: ${response.errorBody()?.string()}")
+
                                 }
                             }
 
