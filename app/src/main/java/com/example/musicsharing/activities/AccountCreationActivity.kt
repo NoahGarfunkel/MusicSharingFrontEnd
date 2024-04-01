@@ -158,6 +158,9 @@ class AccountCreationActivity : ComponentActivity() {
                     val userInfo = UserInfo(spotifyID, userName)
                     val json = Gson().toJson(userInfo)
                     if (response.body() != null) {
+                        Log.d("test", json.toString())
+                        val request = backendApi.saveUserInfo(json).request() // Get the request object
+                        Log.d("FullRequest", request.toString()) // Log the entire request
                         backendApi.saveUserInfo(json).enqueue(object : Callback<ResponseBody> {
                             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                                 if (response.isSuccessful) {
@@ -165,7 +168,9 @@ class AccountCreationActivity : ComponentActivity() {
                                     sharedPreferences.edit().putBoolean(KEY_LOGGED_IN, true).apply()
                                     startActivity(Intent(currentActivity, NavigationActivity::class.java))
                                 } else {
-                                    Log.e("Response", "saveUserInfo request failed with code: ${response.code()}")
+                                    Log.e("Response", "saveUserInfo request failed with code: ${response.errorBody()
+                                        ?.string()}")
+
                                 }
                             }
 
