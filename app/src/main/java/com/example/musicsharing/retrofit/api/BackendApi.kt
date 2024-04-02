@@ -1,5 +1,6 @@
 package com.example.musicsharing.retrofit.api
 
+import com.example.musicsharing.classes.UserInfo
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.Body
@@ -10,10 +11,9 @@ import retrofit2.http.Path
 
 interface BackendApi {
 
-    @Headers("Content-Type: application/json")
     @POST("user/register")
     fun saveUserInfo(
-        @Body() userInfo: String
+        @Body() userInfo: UserInfo
     ): Call<ResponseBody>
 
     @GET("user/exists/{spotifyId}")
