@@ -156,9 +156,8 @@ class AccountCreationActivity : ComponentActivity() {
                     val jsonObject = JSONObject(response.body()!!.string())
                     val spotifyID = jsonObject.optString("id")
                     val userInfo = UserInfo(spotifyID, userName)
-                    val json = Gson().toJson(userInfo)
                     if (response.body() != null) {
-                        backendApi.saveUserInfo(json).enqueue(object : Callback<ResponseBody> {
+                        backendApi.saveUserInfo(userInfo).enqueue(object : Callback<ResponseBody> {
                             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                                 if (response.isSuccessful) {
                                     val sharedPreferences = getSharedPreferences("login_prefs", Context.MODE_PRIVATE)
