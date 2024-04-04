@@ -32,7 +32,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
-import com.example.musicsharing.classes.UserInfo
+import com.example.musicsharing.classes.UserInfoPayload
 import com.example.musicsharing.retrofit.api.AccountsApi
 import com.example.musicsharing.retrofit.AccountsRetrofit
 import com.example.musicsharing.retrofit.BackendRetrofit
@@ -155,7 +155,7 @@ class AccountCreationActivity : ComponentActivity() {
                 if (response.isSuccessful) {
                     val jsonObject = JSONObject(response.body()!!.string())
                     val spotifyID = jsonObject.optString("id")
-                    val userInfo = UserInfo(spotifyID, userName)
+                    val userInfo = UserInfoPayload(spotifyID, userName)
                     if (response.body() != null) {
                         backendApi.saveUserInfo(userInfo).enqueue(object : Callback<ResponseBody> {
                             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
