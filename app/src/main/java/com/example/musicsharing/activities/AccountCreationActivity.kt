@@ -18,6 +18,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
@@ -32,6 +34,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.text.input.ImeAction
 import com.example.musicsharing.classes.UserInfoPayload
 import com.example.musicsharing.retrofit.api.AccountsApi
 import com.example.musicsharing.retrofit.AccountsRetrofit
@@ -40,7 +44,6 @@ import com.example.musicsharing.retrofit.api.WebApi
 import com.example.musicsharing.retrofit.WebRetrofit
 import com.example.musicsharing.retrofit.api.BackendApi
 import com.example.musicsharing.ui.theme.MusicSharingTheme
-import com.google.gson.Gson
 import okhttp3.ResponseBody
 import org.json.JSONObject
 import retrofit2.Call
@@ -85,6 +88,7 @@ class AccountCreationActivity : ComponentActivity() {
             color = MaterialTheme.colorScheme.background
         ) {
             var userName by rememberSaveable { mutableStateOf("") }
+            val keyboardController = LocalSoftwareKeyboardController.current
 
             Column(
                 modifier = Modifier
@@ -111,6 +115,9 @@ class AccountCreationActivity : ComponentActivity() {
                     value = userName,
                     onValueChange = { userName = it },
                     placeholder = { Text(text = "e.g. NoahGarfunkel") },
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                    keyboardActions = KeyboardActions(
+                        onDone = {keyboardController?.hide()})
                 )
 
                 Button(
