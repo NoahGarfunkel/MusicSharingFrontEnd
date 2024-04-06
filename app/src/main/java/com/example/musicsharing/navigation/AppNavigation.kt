@@ -19,6 +19,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.musicsharing.displayScreens.GreetingsScreen
 import com.example.musicsharing.displayScreens.SocialMediaPostScreen
+import com.example.musicsharing.displayScreens.FriendsScreen
 import profileScreen
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -75,6 +76,9 @@ fun AppNavigation(signOut: () -> Unit) {
                 }
                 composable(route = Screens.GreetingsScreen.name) {
                     GreetingsScreen()
+                }
+                composable(route = Screens.FriendsScreen.name) {
+                    FriendsScreen()
                 }
             }
         }

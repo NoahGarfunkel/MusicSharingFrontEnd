@@ -28,4 +28,9 @@ val listOfNavItems = listOf(
         icon = Icons.Default.Person,
         route = Screens.ProfileScreen.name
     ),
+    NavItems(
+        label ="Add Friends",
+        icon = Icons.Default.Add,
+        route = Screens.FriendsScreen.name
+    )
 )

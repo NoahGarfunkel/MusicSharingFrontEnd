@@ -12,6 +12,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.musicsharing.displayScreens.GreetingsScreen
 import com.example.musicsharing.displayScreens.SocialMediaPostScreen
+import com.example.musicsharing.displayScreens.FriendsScreen
 import com.example.musicsharing.navigation.AppNavigation
 import com.example.musicsharing.ui.theme.MusicSharingTheme
 
@@ -38,6 +39,9 @@ class NavigationActivity : ComponentActivity() {
                     }
                     composable("AppNavigation") {
                         AppNavigation(::signOut)
+                    }
+                    composable("friends") {
+                        FriendsScreen()
                     }
                 }
             }
