@@ -71,15 +71,10 @@ class NavigationActivity : ComponentActivity() {
                     Log.d("addFriendResponse", "friend $enteredName was added succesfully, with code: ${response.code()}")
                 } else {
                     Log.e("addFriendResponse", "getUser request failed with code: ${response.errorBody()?.string()}")
-                    throw Exception()
                 }
             }
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                /*val sharedPreferences = getSharedPreferences("login_prefs", Context.MODE_PRIVATE)
-                sharedPreferences.edit().putBoolean(KEY_LOGGED_IN, true).apply()
-                startActivity(Intent(currentActivity, NavigationActivity::class.java))*/
                 Log.e("addFriendResponse", "getUser request failed: ${t.message}")
-                throw  Exception()
             }
         })
     }
