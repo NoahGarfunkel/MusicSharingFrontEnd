@@ -49,9 +49,6 @@ class NavigationActivity : ComponentActivity() {
                     composable("AppNavigation") {
                         AppNavigation(::signOut, ::addFriend)
                     }
-                    /*composable("friends") {
-                        FriendsScreen(::addFriend)
-                    }*/
                 }
             }
         }
