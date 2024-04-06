@@ -57,6 +57,8 @@ class NavigationActivity : ComponentActivity() {
     private fun signOut(){
         val sharedPreferences = getSharedPreferences("login_prefs", Context.MODE_PRIVATE)
         sharedPreferences.edit().putBoolean(SharedPreferencesConstants.KEY_LOGGED_IN, false).apply()
+        sharedPreferences.edit().remove(SharedPreferencesConstants.KEY_SPOTIFY_ID).apply()
+        sharedPreferences.edit().remove(SharedPreferencesConstants.KEY_USER_ID).apply()
         startActivity(Intent(this, LoginActivity::class.java))
     }
 
