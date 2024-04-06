@@ -175,7 +175,6 @@ class AccountCreationActivity : ComponentActivity() {
                                     sharedPreferences.edit().putBoolean(SharedPreferencesConstants.KEY_LOGGED_IN, true).apply()
                                     sharedPreferences.edit().putString(SharedPreferencesConstants.KEY_SPOTIFY_ID, spotifyID).apply()
                                     setUserId(spotifyID)
-                                    Log.d("userIdFromSP", "The id is ${sharedPreferences.getInt(SharedPreferencesConstants.KEY_USER_ID, 0)}")
                                     startActivity(Intent(currentActivity, NavigationActivity::class.java))
 
                                 } else {
@@ -204,11 +203,10 @@ class AccountCreationActivity : ComponentActivity() {
     }
 
     private fun setUserId(spotifyId: String) {
-        var userId: Int = 0
         backendApi.getUser(spotifyId).enqueue(object : Callback<User> {
             override fun onResponse(call: Call<User>, response: Response<User>) {
                 if (response.isSuccessful && response.body() != null && response.body()!!.id != 0) {
-                    userId = response.body()!!.id
+                    val userId = response.body()!!.id
                     val sharedPreferences = getSharedPreferences("login_prefs", Context.MODE_PRIVATE)
                     sharedPreferences.edit().putInt(SharedPreferencesConstants.KEY_USER_ID, userId).apply()
                     Log.d("getUserResponse", "getUser responded with ${response.body()!!.id}")
