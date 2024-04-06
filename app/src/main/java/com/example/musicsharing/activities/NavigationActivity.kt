@@ -4,21 +4,30 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.musicsharing.classes.FollowPayload
+import com.example.musicsharing.constants.SharedPreferencesConstants
 import com.example.musicsharing.displayScreens.GreetingsScreen
 import com.example.musicsharing.displayScreens.SocialMediaPostScreen
-import com.example.musicsharing.displayScreens.FriendsScreen
 import com.example.musicsharing.navigation.AppNavigation
+import com.example.musicsharing.retrofit.BackendRetrofit
+import com.example.musicsharing.retrofit.api.BackendApi
 import com.example.musicsharing.ui.theme.MusicSharingTheme
+import okhttp3.ResponseBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
-private const val KEY_LOGGED_IN = "isLoggedIn"
 
 class NavigationActivity : ComponentActivity() {
+    private val backendApi = BackendRetrofit().getInstance().create(BackendApi::class.java)
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,11 +47,11 @@ class NavigationActivity : ComponentActivity() {
                         GreetingsScreen()
                     }
                     composable("AppNavigation") {
-                        AppNavigation(::signOut)
+                        AppNavigation(::signOut, ::addFriend)
                     }
-                    composable("friends") {
-                        FriendsScreen()
-                    }
+                    /*composable("friends") {
+                        FriendsScreen(::addFriend)
+                    }*/
                 }
             }
         }
@@ -50,7 +59,31 @@ class NavigationActivity : ComponentActivity() {
 
     private fun signOut(){
         val sharedPreferences = getSharedPreferences("login_prefs", Context.MODE_PRIVATE)
-        sharedPreferences.edit().putBoolean(KEY_LOGGED_IN, false).apply()
+        sharedPreferences.edit().putBoolean(SharedPreferencesConstants.KEY_LOGGED_IN, false).apply()
         startActivity(Intent(this, LoginActivity::class.java))
+    }
+
+    private fun addFriend(enteredName: String){
+        val sharedPreferences = getSharedPreferences("login_prefs", Context.MODE_PRIVATE)
+        val userId = sharedPreferences.getInt(SharedPreferencesConstants.KEY_USER_ID, 0)
+        val followPayload = FollowPayload(enteredName, userId)
+        Log.d("sharedPrefUserId", "userId gotten from shared prefs $userId")
+        backendApi.followUser(followPayload).enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.isSuccessful) {
+                    Log.d("addFriendResponse", "friend $enteredName was added succesfully, with code: ${response.code()}")
+                } else {
+                    Log.e("addFriendResponse", "getUser request failed with code: ${response.errorBody()?.string()}")
+                    throw Exception()
+                }
+            }
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                /*val sharedPreferences = getSharedPreferences("login_prefs", Context.MODE_PRIVATE)
+                sharedPreferences.edit().putBoolean(KEY_LOGGED_IN, true).apply()
+                startActivity(Intent(currentActivity, NavigationActivity::class.java))*/
+                Log.e("addFriendResponse", "getUser request failed: ${t.message}")
+                throw  Exception()
+            }
+        })
     }
 }

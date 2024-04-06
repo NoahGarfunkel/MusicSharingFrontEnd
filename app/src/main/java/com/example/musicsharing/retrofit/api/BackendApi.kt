@@ -16,7 +16,7 @@ import retrofit2.http.Path
 
 interface BackendApi {
     // User Functions
-    @GET("user/follower")
+    @POST("user/follower")
     fun followUser(
         @Body() followPayload: FollowPayload
     ): Call<ResponseBody>

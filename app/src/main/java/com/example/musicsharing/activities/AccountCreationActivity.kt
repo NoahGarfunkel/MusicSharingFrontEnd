@@ -36,7 +36,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
+import com.example.musicsharing.classes.User
 import com.example.musicsharing.classes.UserInfoPayload
+import com.example.musicsharing.constants.SharedPreferencesConstants
 import com.example.musicsharing.retrofit.api.AccountsApi
 import com.example.musicsharing.retrofit.AccountsRetrofit
 import com.example.musicsharing.retrofit.BackendRetrofit
@@ -44,13 +46,15 @@ import com.example.musicsharing.retrofit.api.WebApi
 import com.example.musicsharing.retrofit.WebRetrofit
 import com.example.musicsharing.retrofit.api.BackendApi
 import com.example.musicsharing.ui.theme.MusicSharingTheme
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import okhttp3.ResponseBody
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-private const val KEY_LOGGED_IN = "isLoggedIn"
 
 class AccountCreationActivity : ComponentActivity() {
     private lateinit var clientID: String
@@ -168,8 +172,12 @@ class AccountCreationActivity : ComponentActivity() {
                             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                                 if (response.isSuccessful) {
                                     val sharedPreferences = getSharedPreferences("login_prefs", Context.MODE_PRIVATE)
-                                    sharedPreferences.edit().putBoolean(KEY_LOGGED_IN, true).apply()
+                                    sharedPreferences.edit().putBoolean(SharedPreferencesConstants.KEY_LOGGED_IN, true).apply()
+                                    sharedPreferences.edit().putString(SharedPreferencesConstants.KEY_SPOTIFY_ID, spotifyID).apply()
+                                    setUserId(spotifyID)
+                                    Log.d("userIdFromSP", "The id is ${sharedPreferences.getInt(SharedPreferencesConstants.KEY_USER_ID, 0)}")
                                     startActivity(Intent(currentActivity, NavigationActivity::class.java))
+
                                 } else {
                                     Log.e("Response", "saveUserInfo request failed with code: ${response.errorBody()?.string()}")
 
@@ -191,6 +199,30 @@ class AccountCreationActivity : ComponentActivity() {
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 Log.e("saveUserInfo", "API call failed with exception: ${t.message}")
+            }
+        })
+    }
+
+    private fun setUserId(spotifyId: String) {
+        var userId: Int = 0
+        backendApi.getUser(spotifyId).enqueue(object : Callback<User> {
+            override fun onResponse(call: Call<User>, response: Response<User>) {
+                if (response.isSuccessful && response.body() != null && response.body()!!.id != 0) {
+                    userId = response.body()!!.id
+                    val sharedPreferences = getSharedPreferences("login_prefs", Context.MODE_PRIVATE)
+                    sharedPreferences.edit().putInt(SharedPreferencesConstants.KEY_USER_ID, userId).apply()
+                    Log.d("getUserResponse", "getUser responded with ${response.body()!!.id}")
+                } else {
+                    Log.e("Response", "getUser request failed with code: ${response.errorBody()?.string()}")
+                    throw Exception()
+                }
+            }
+            override fun onFailure(call: Call<User>, t: Throwable) {
+                /*val sharedPreferences = getSharedPreferences("login_prefs", Context.MODE_PRIVATE)
+                sharedPreferences.edit().putBoolean(KEY_LOGGED_IN, true).apply()
+                startActivity(Intent(currentActivity, NavigationActivity::class.java))*/
+                Log.e("getUser", "getUser request failed: ${t.message}")
+                throw  Exception()
             }
         })
     }
