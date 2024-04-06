@@ -4,5 +4,5 @@ enum class Screens {
     GreetingsScreen,
     ProfileScreen,
     PostsScreen,
-    AccountCreationScreen,
+    AccountCreationActivity,
 }

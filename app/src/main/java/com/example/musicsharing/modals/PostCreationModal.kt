@@ -5,6 +5,7 @@ import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -16,6 +17,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -35,7 +37,7 @@ import androidx.navigation.compose.rememberNavController
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun LogoutDialog() {
+fun PostCreationDialog() {
     var showDialog by remember { mutableStateOf(true) }
 
     if (showDialog) {
@@ -47,34 +49,57 @@ fun LogoutDialog() {
                     .clip(RoundedCornerShape(10.dp))
                     .background(Color.White)
                     .fillMaxWidth()
-                    .height(150.dp),
+                    .height(300.dp),
                 elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
 
                 ) {
                 Column(
                     modifier = Modifier
                         .background(Color.White)
-                        .height(150.dp)
+//                        .height(1500.dp)
 
                 ) {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .background(Color(0xFF309CA9))
-                            .padding(bottom = 8.dp),
-
+                            .padding(bottom = 10.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text(
-                            text = "Are You Sure You Want To Log Out?",
-                            fontSize = 17.sp,
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = Color.White,
-                            modifier = Modifier
-                                .weight(1f)
-                                .padding(top = 17.dp, start = 15.dp, bottom = 5.dp)
-                        )
-                    }
+                            var searchText by remember { mutableStateOf("") }
+                            TextField(
+                                value = searchText,
+                                onValueChange = { searchText = it },
+                                placeholder = {
+                                    Text(
+                                        "Search for songs",
+                                        fontSize = 12.sp,
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .height(80.dp)
+                                            .padding(top = 0.dp)
+                                    )},
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .padding(top = 10.dp, start = 15.dp, bottom = 5.dp)
+                                    .height(45.dp)
+                                    .width(10.dp)
+                            )
+                            Button(
+                                onClick = { /* Handle search button click here */ },
+                                modifier = Modifier
+                                    .padding(start = 8.dp, end = 8.dp, top  = 8.dp)
+                                    .height(35.dp)
+                                    .width(80.dp)
+                            ) {
+                                Text(
+                                    "Search",
+                                    fontSize = 8.sp,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .fillMaxHeight()
+                                )
+                            }
+                        }
 
                     Row(
                         modifier = Modifier
@@ -89,34 +114,34 @@ fun LogoutDialog() {
                                     end = Offset(x = size.width, y = 0f)
                                 )
                             },
-
                         verticalAlignment = Alignment.Bottom
                     ) {
                         Button(
                             colors = ButtonDefaults.buttonColors(Color(0xFF309CA9)),
                             onClick = {
-                                navController.navigate("loginScreen")
                                 showDialog = false
-                                      },
+                            },
                             modifier = Modifier
-                                .padding(start = 16.dp, bottom = 10.dp, top = 30.dp, end = 10.dp)
-                                .height(40.dp)
+                                .padding(start = 20.dp, top = 180.dp, end = 10.dp)
+                                .height(35.dp)
                                 .width(100.dp)
+
                         ) {
-                            Text(text = "Yes")
+                            Text(text = "Cancel")
+
                         }
                         Button(
                             colors = ButtonDefaults.buttonColors(Color(0xFF309CA9)),
                             onClick = {
                                 showDialog = false
-                                      },
+                            },
                             modifier = Modifier
-                                .padding(start = 50.dp, bottom = 10.dp, top = 10.dp, end = 10.dp)
-                                .height(40.dp)
+                                .padding(start = 50.dp, end = 10.dp)
+                                .height(35.dp)
                                 .width(100.dp)
 
                         ) {
-                            Text(text = "No")
+                            Text(text = "Post")
                         }
                     }
                 }
@@ -128,6 +153,6 @@ fun LogoutDialog() {
 @RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true)
 @Composable
-fun PreviewLogoutModal() {
-    LogoutDialog()
+fun PreviewPostCreationModal() {
+    PostCreationDialog()
 }

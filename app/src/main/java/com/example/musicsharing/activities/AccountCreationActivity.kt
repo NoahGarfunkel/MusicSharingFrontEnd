@@ -2,6 +2,7 @@ package com.example.musicsharing.activities
 
 import PropertiesReader
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -19,7 +20,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -32,6 +32,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import androidx.navigation.compose.rememberNavController
 import com.example.musicsharing.classes.UserInfo
 import com.example.musicsharing.retrofit.api.AccountsApi
 import com.example.musicsharing.retrofit.AccountsRetrofit
@@ -79,6 +80,7 @@ class AccountCreationActivity : ComponentActivity() {
 
     @Composable
     fun AccountCreationScreen(){
+        val navController = rememberNavController()
         Surface(
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
@@ -115,6 +117,8 @@ class AccountCreationActivity : ComponentActivity() {
                 Button(
                     onClick = {
                         code?.let { getToken(it, userName) }
+//                        navController.navigate("home")
+
                     },
                     modifier = Modifier.fillMaxWidth()
                 ) {
