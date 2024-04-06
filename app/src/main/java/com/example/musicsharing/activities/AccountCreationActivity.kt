@@ -184,7 +184,8 @@ class AccountCreationActivity : ComponentActivity() {
                                 /*
                                 sharedPreferences.edit().putBoolean(SharedPreferencesConstants.KEY_LOGGED_IN, true).apply()
                                 sharedPreferences.edit().putString(SharedPreferencesConstants.KEY_SPOTIFY_ID, spotifyID).apply()
-                                setUserId(spotifyID)*/
+                                setUserId(spotifyID)
+                                startActivity(Intent(currentActivity, NavigationActivity::class.java))*/
                                 Log.e("saveUserInfo", "saveUserInfo request failed: ${t.message}")
                             }
                         })
