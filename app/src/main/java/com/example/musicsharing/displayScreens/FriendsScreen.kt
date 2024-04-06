@@ -20,7 +20,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.sp
-import kotlin.reflect.KFunction1
 
 @Composable
 fun FriendsScreen(addFriend:  (String) -> Unit) {

@@ -46,9 +46,6 @@ import com.example.musicsharing.retrofit.api.WebApi
 import com.example.musicsharing.retrofit.WebRetrofit
 import com.example.musicsharing.retrofit.api.BackendApi
 import com.example.musicsharing.ui.theme.MusicSharingTheme
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import okhttp3.ResponseBody
 import org.json.JSONObject
 import retrofit2.Call
