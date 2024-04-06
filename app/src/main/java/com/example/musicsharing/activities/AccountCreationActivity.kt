@@ -203,24 +203,20 @@ class AccountCreationActivity : ComponentActivity() {
     }
 
     private fun setUserId(spotifyId: String) {
+        val sharedPreferences = getSharedPreferences("login_prefs", Context.MODE_PRIVATE)
         backendApi.getUser(spotifyId).enqueue(object : Callback<User> {
             override fun onResponse(call: Call<User>, response: Response<User>) {
                 if (response.isSuccessful && response.body() != null && response.body()!!.id != 0) {
                     val userId = response.body()!!.id
-                    val sharedPreferences = getSharedPreferences("login_prefs", Context.MODE_PRIVATE)
                     sharedPreferences.edit().putInt(SharedPreferencesConstants.KEY_USER_ID, userId).apply()
                     Log.d("getUserResponse", "getUser responded with ${response.body()!!.id}")
                 } else {
                     Log.e("Response", "getUser request failed with code: ${response.errorBody()?.string()}")
-                    throw Exception()
                 }
             }
             override fun onFailure(call: Call<User>, t: Throwable) {
-                /*val sharedPreferences = getSharedPreferences("login_prefs", Context.MODE_PRIVATE)
-                sharedPreferences.edit().putBoolean(KEY_LOGGED_IN, true).apply()
-                startActivity(Intent(currentActivity, NavigationActivity::class.java))*/
+                sharedPreferences.edit().putInt(SharedPreferencesConstants.KEY_USER_ID, 0).apply()
                 Log.e("getUser", "getUser request failed: ${t.message}")
-                throw  Exception()
             }
         })
     }
