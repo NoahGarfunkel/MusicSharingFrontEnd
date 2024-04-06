@@ -13,6 +13,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.MailOutline
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -37,6 +38,7 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun PostItem(username: String, postContent: String) {
     var likes by remember { mutableStateOf(0) }
+    var comments by remember { mutableStateOf(0) }
     var isLiked by remember { mutableStateOf(false) }
     Card(
         modifier = Modifier
@@ -106,23 +108,22 @@ fun PostItem(username: String, postContent: String) {
                     .fillMaxWidth()
                     .padding(bottom = 8.dp, start = 10.dp, end = 10.dp)
                     .drawWithContent {
-                        drawContent() // Draw the original content of the Row
+                        drawContent()
                         drawLine(
-                            color = (Color(0xFF00889A)), // Set the color of the border
-                            strokeWidth = 1.dp.toPx(), // Set the thickness of the border
-                            start = Offset(x = 0f, y = 0f), // Start from the top left corner
-                            end = Offset(x = size.width, y = 0f) // Draw to the top right corner
+                            color = (Color(0xFF00889A)),
+                            strokeWidth = 1.dp.toPx(),
+                            start = Offset(x = 0f, y = 0f),
+                            end = Offset(x = size.width, y = 0f)
                         )
                     },
 
                 verticalAlignment = Alignment.Bottom
             ) {
-
                 // likes button
                 IconButton(
 
                     onClick = {
-                        likes += if (isLiked) -1 else 1 // Toggle the like state
+                        likes += if (isLiked) -1 else 1
                         isLiked = !isLiked
                     },
                     modifier = Modifier
@@ -141,7 +142,31 @@ fun PostItem(username: String, postContent: String) {
                     style = MaterialTheme.typography.bodyMedium,
                     color = Color.Black,
                     modifier = Modifier
-                        .padding(start = 5.dp, top = 3.dp)
+                        .padding(start = 5.dp, top = 3.dp, end = 10.dp)
+                )
+                //comments button
+                IconButton(
+
+                    onClick = {
+                              /* ADD COMMENT HERE */
+                    },
+                    modifier = Modifier
+                        .size(20.dp)
+
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.MailOutline,
+                        contentDescription = "Comments",
+                        tint = Color(0xFF00889A)
+                    )
+                }
+                Text(
+                    text = "$comments",
+                    fontSize = 12.sp,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Color.Black,
+                    modifier = Modifier
+                        .padding(start = 5.dp, top = 3.dp, end = 10.dp)
                 )
             }
         }
