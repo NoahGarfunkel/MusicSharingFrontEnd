@@ -164,11 +164,11 @@ class AccountCreationActivity : ComponentActivity() {
                     val jsonObject = JSONObject(response.body()!!.string())
                     val spotifyID = jsonObject.optString("id")
                     val userInfo = UserInfoPayload(spotifyID, userName)
+                    val sharedPreferences = getSharedPreferences("login_prefs", Context.MODE_PRIVATE)
                     if (response.body() != null) {
                         backendApi.saveUserInfo(userInfo).enqueue(object : Callback<ResponseBody> {
                             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                                 if (response.isSuccessful) {
-                                    val sharedPreferences = getSharedPreferences("login_prefs", Context.MODE_PRIVATE)
                                     sharedPreferences.edit().putBoolean(SharedPreferencesConstants.KEY_LOGGED_IN, true).apply()
                                     sharedPreferences.edit().putString(SharedPreferencesConstants.KEY_SPOTIFY_ID, spotifyID).apply()
                                     setUserId(spotifyID)
@@ -181,9 +181,10 @@ class AccountCreationActivity : ComponentActivity() {
                             }
 
                             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                                /*val sharedPreferences = getSharedPreferences("login_prefs", Context.MODE_PRIVATE)
-                                sharedPreferences.edit().putBoolean(KEY_LOGGED_IN, true).apply()
-                                startActivity(Intent(currentActivity, NavigationActivity::class.java))*/
+                                /*
+                                sharedPreferences.edit().putBoolean(SharedPreferencesConstants.KEY_LOGGED_IN, true).apply()
+                                sharedPreferences.edit().putString(SharedPreferencesConstants.KEY_SPOTIFY_ID, spotifyID).apply()
+                                setUserId(spotifyID)*/
                                 Log.e("saveUserInfo", "saveUserInfo request failed: ${t.message}")
                             }
                         })
