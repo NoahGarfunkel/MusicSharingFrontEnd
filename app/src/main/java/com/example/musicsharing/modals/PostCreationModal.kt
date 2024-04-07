@@ -17,10 +17,16 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -36,15 +42,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import androidx.compose.ui.window.PopupProperties
+import com.example.musicsharing.classes.Track
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun PostCreationDialog(setShowDialog: (Boolean) -> Unit) {
+fun PostCreationDialog(setShowDialog: (Boolean) -> Unit, getSongsList: suspend (String) -> List<Track>) {
 
     var caption by remember { mutableStateOf("") }
     var song by remember { mutableStateOf("") }
     val keyboardController = LocalSoftwareKeyboardController.current
-
 
     Dialog(onDismissRequest = { setShowDialog(false) }, properties = DialogProperties(
         dismissOnBackPress = true,
@@ -109,6 +115,15 @@ fun PostCreationDialog(setShowDialog: (Boolean) -> Unit) {
                         onDone = {keyboardController?.hide()})
                 )
 
+                Spacer(modifier = Modifier.padding(8.dp))
+
+                Text(
+                    text = "Search for song",
+                    style = MaterialTheme.typography.bodyLarge
+                )
+
+                SongDropdownSearch(getSongsList)
+
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -142,6 +157,59 @@ fun PostCreationDialog(setShowDialog: (Boolean) -> Unit) {
                     ) {
                         Text(text = "Post")
                     }
+                }
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun SongDropdownSearch(getSongsList: suspend (String) -> List<Track>) {
+    val tracks: List<Track> = mutableListOf()
+    LaunchedEffect(Unit) {
+        val tracks = getSongsList("glaive")
+    }
+    val options = tracks.map { it.name }
+    var expanded by remember { mutableStateOf(false) }
+    var selectedOptionText by remember { mutableStateOf("") }
+    ExposedDropdownMenuBox(
+        expanded = expanded,
+        onExpandedChange = { expanded = !expanded },
+    ) {
+        TextField(
+            // The `menuAnchor` modifier must be passed to the text field for correctness.
+            modifier = Modifier.menuAnchor(),
+            value = selectedOptionText,
+            onValueChange = { selectedOptionText = it },
+            label = { Text("Label") },
+            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+            colors = ExposedDropdownMenuDefaults.textFieldColors(
+                focusedContainerColor = Color.White,
+                unfocusedContainerColor = Color.White
+            ),
+        )
+        // filter options based on text field value
+        val filteringOptions = options.filter { it.contains(selectedOptionText, ignoreCase = true) }
+        if (filteringOptions.isNotEmpty()) {
+            DropdownMenu(
+                modifier = Modifier
+                    .background(Color.White)
+                    .exposedDropdownSize(true)
+                ,
+                properties = PopupProperties(focusable = false),
+                expanded = expanded,
+                onDismissRequest = { expanded = false },
+            ) {
+                filteringOptions.forEach { selectionOption ->
+                    DropdownMenuItem(
+                        text = { Text(selectionOption) },
+                        onClick = {
+                            selectedOptionText = selectionOption
+                            expanded = false
+                        },
+                        contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
+                    )
                 }
             }
         }

@@ -1,7 +1,5 @@
 package com.example.musicsharing.displayScreens
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -16,15 +14,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.musicsharing.classes.Post
+import com.example.musicsharing.classes.Track
 
 import com.example.musicsharing.modals.PostCreationDialog
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun SocialMediaPostScreen(getPostFeed: suspend () -> List<Post>) {
+fun SocialMediaPostScreen(getPostFeed: suspend () -> List<Post>, getSongsList: suspend (String) -> List<Track>) {
     var posts = remember { mutableStateListOf<Post>() }
     var showDialog by remember { mutableStateOf(false) }
-
 
     LaunchedEffect(Unit) {
         val data = getPostFeed()
@@ -58,7 +55,7 @@ fun SocialMediaPostScreen(getPostFeed: suspend () -> List<Post>) {
         if (showDialog) {
             PostCreationDialog(setShowDialog = {
                 showDialog = it
-            })
+            }, getSongsList)
         }
     }
 }
