@@ -21,7 +21,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun FriendsScreen() {
+fun FriendsScreen(addFriend:  (String) -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -60,7 +60,8 @@ fun FriendsScreen() {
 
             Button(
                 onClick = {
-                    addFriend()
+                    addFriend(userName)
+                    userName = ""
                 },
                 modifier = Modifier
                     .padding(16.dp)
@@ -90,9 +91,5 @@ fun FriendsScreen() {
             )
         }
     }
-}
-
-fun addFriend(){
-
 }
 

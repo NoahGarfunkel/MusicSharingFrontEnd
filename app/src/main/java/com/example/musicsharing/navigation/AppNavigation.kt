@@ -24,7 +24,7 @@ import profileScreen
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun AppNavigation(signOut: () -> Unit) {
+fun AppNavigation(signOut: () -> Unit, addFriend: (String) -> Unit) {
     val navController : NavHostController = rememberNavController()
 
     Scaffold(
@@ -78,7 +78,7 @@ fun AppNavigation(signOut: () -> Unit) {
                     GreetingsScreen()
                 }
                 composable(route = Screens.FriendsScreen.name) {
-                    FriendsScreen()
+                    FriendsScreen(addFriend)
                 }
             }
         }
