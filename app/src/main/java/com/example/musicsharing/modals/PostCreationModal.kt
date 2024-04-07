@@ -50,10 +50,7 @@ fun PostCreationDialog(
 
     var caption by remember { mutableStateOf("") }
     var song by remember { mutableStateOf("") }
-    //var post by remember {mutableStateOf(Post)}
-
     val keyboardController = LocalSoftwareKeyboardController.current
-
 
     Dialog(onDismissRequest = { setShowDialog(false) }, properties = DialogProperties(
         dismissOnBackPress = true,

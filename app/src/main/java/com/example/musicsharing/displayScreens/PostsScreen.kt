@@ -28,12 +28,10 @@ fun SocialMediaPostScreen(
     var posts = remember { mutableStateListOf<Post>() }
     var showDialog by remember { mutableStateOf(false) }
 
-
     LaunchedEffect(Unit) {
         val data = getPostFeed()
         posts.addAll(data)
     }
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -57,7 +55,6 @@ fun SocialMediaPostScreen(
                 Icon(Icons.Filled.Add, contentDescription = "Add")
             }
         }
-
         if (showDialog) {
             PostCreationDialog(setShowDialog = {
                 showDialog = it
