@@ -15,15 +15,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.musicsharing.classes.Post
+
 import com.example.musicsharing.modals.PostCreationDialog
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun SocialMediaPostScreen() {
-    val posts = remember { mutableStateListOf<String>() }
-    var postText by remember { mutableStateOf("") }
+fun SocialMediaPostScreen(getPostFeed: suspend () -> List<Post>) {
+    var posts = remember { mutableStateListOf<Post>() }
     var showDialog by remember { mutableStateOf(false) }
 
+
+    LaunchedEffect(Unit) {
+        val data = getPostFeed()
+        posts.addAll(data)
+    }
 
     Column(
         modifier = Modifier
@@ -32,14 +38,14 @@ fun SocialMediaPostScreen() {
 
     ) {
         LazyColumn(modifier = Modifier.weight(1f)) {
-            itemsIndexed(posts.reversed()) { index, post ->
-                PostItem(username = "Morgan Weltzer", postContent = post)
+            itemsIndexed(posts) { index, post ->
+                PostItem(postContent = post)
             }
         }
         Box(
             modifier = Modifier
-                .fillMaxSize()
                 .padding(16.dp)
+                .fillMaxWidth(),
         ) {
             FloatingActionButton(
                 onClick = { showDialog = true },
@@ -57,7 +63,7 @@ fun SocialMediaPostScreen() {
     }
 }
 
-
+/*
 @RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true)
 @Composable
@@ -65,3 +71,4 @@ fun DefaultPreview() {
     SocialMediaPostScreen()
 }
 
+*/
