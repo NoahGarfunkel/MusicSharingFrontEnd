@@ -141,7 +141,6 @@ fun PostCreationDialog(
                             setShowDialog(false)
                             var post = PostPayload("",caption,"","","",song,0 )
                             CoroutineScope(Dispatchers.IO).launch {
-                                // Call the suspend function within the coroutine
                                 sendPostInfo(post)
                             }
                         },
