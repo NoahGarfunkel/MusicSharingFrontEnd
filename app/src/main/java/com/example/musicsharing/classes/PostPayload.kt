@@ -7,8 +7,7 @@ data class PostPayload (
     val spotifyId: String,
     val spotifyUrl: String,
     val trackName: String,
-    val postId: Int,
-    val userId: Int
+    var userId: Int
 )
 
 

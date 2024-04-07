@@ -44,7 +44,7 @@ interface BackendApi {
     @POST("post")
     fun createPost(
         @Body() postPayload: PostPayload
-    ): Call<ResponseBody>
+    ): Call<Post>
 
     @GET("post/feed/user/{userId}")
     fun getPostFeed(

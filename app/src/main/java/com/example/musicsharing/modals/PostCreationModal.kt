@@ -32,17 +32,26 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import com.example.musicsharing.classes.Post
+import com.example.musicsharing.classes.PostPayload
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun PostCreationDialog(setShowDialog: (Boolean) -> Unit) {
+fun PostCreationDialog(
+    setShowDialog: (Boolean) -> Unit,
+    sendPostInfo: suspend (PostPayload) -> Post
+) {
 
     var caption by remember { mutableStateOf("") }
     var song by remember { mutableStateOf("") }
+    //var post by remember {mutableStateOf(Post)}
+
     val keyboardController = LocalSoftwareKeyboardController.current
 
 
@@ -133,6 +142,11 @@ fun PostCreationDialog(setShowDialog: (Boolean) -> Unit) {
                         colors = ButtonDefaults.buttonColors(Color(0xFF309CA9)),
                         onClick = {
                             setShowDialog(false)
+                            var post = PostPayload("",caption,"","","",song,0 )
+                            CoroutineScope(Dispatchers.IO).launch {
+                                // Call the suspend function within the coroutine
+                                sendPostInfo(post)
+                            }
                         },
                         modifier = Modifier
                             .padding(start = 50.dp, end = 10.dp)
