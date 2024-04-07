@@ -12,13 +12,15 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.musicsharing.classes.FollowPayload
+import com.example.musicsharing.classes.Post
 import com.example.musicsharing.constants.SharedPreferencesConstants
 import com.example.musicsharing.displayScreens.GreetingsScreen
-import com.example.musicsharing.displayScreens.SocialMediaPostScreen
 import com.example.musicsharing.navigation.AppNavigation
 import com.example.musicsharing.retrofit.BackendRetrofit
 import com.example.musicsharing.retrofit.api.BackendApi
 import com.example.musicsharing.ui.theme.MusicSharingTheme
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -40,14 +42,11 @@ class NavigationActivity : ComponentActivity() {
                     composable("login") {
                         LoginActivity()
                     }
-                    composable("posts") {
-                        SocialMediaPostScreen()
-                    }
                     composable("home") {
                         GreetingsScreen()
                     }
                     composable("AppNavigation") {
-                        AppNavigation(::signOut, ::addFriend)
+                        AppNavigation(::signOut, ::addFriend, ::getPostFeed)
                     }
                 }
             }
@@ -66,11 +65,10 @@ class NavigationActivity : ComponentActivity() {
         val sharedPreferences = getSharedPreferences("login_prefs", Context.MODE_PRIVATE)
         val userId = sharedPreferences.getInt(SharedPreferencesConstants.KEY_USER_ID, 0)
         val followPayload = FollowPayload(enteredName, userId)
-        Log.d("sharedPrefUserId", "userId gotten from shared prefs $userId")
         backendApi.followUser(followPayload).enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
-                    Log.d("addFriendResponse", "friend $enteredName was added succesfully, with code: ${response.code()}")
+                    Log.d("addFriendResponse", "friend $enteredName was added successfully, with code: ${response.code()}")
                 } else {
                     Log.e("addFriendResponse", "getUser request failed with code: ${response.errorBody()?.string()}")
                 }
@@ -79,5 +77,25 @@ class NavigationActivity : ComponentActivity() {
                 Log.e("addFriendResponse", "getUser request failed: ${t.message}")
             }
         })
+    }
+
+    private suspend fun getPostFeed(): List<Post> {
+        val sharedPreferences = getSharedPreferences("login_prefs", Context.MODE_PRIVATE)
+        val userId = sharedPreferences.getInt(SharedPreferencesConstants.KEY_USER_ID, 0)
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = backendApi.getPostFeed(userId).execute()
+                if (response.isSuccessful && response.body() != null){
+                    response.body()
+                } else {
+                    Log.e("getPostFeed", "getPostFeed request failed with code: ${response.code()}")
+                    emptyList<Post>()
+                }
+            } catch (e: Exception) {
+                Log.e("getPostFeed", "getPostFeed request failed: ${e.message}")
+                emptyList<Post>()
+            }!!
+        }
+
     }
 }
