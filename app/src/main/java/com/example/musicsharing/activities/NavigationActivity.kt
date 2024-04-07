@@ -13,6 +13,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.musicsharing.classes.FollowPayload
 import com.example.musicsharing.classes.Post
+import com.example.musicsharing.classes.PostPayload
 import com.example.musicsharing.constants.SharedPreferencesConstants
 import com.example.musicsharing.displayScreens.GreetingsScreen
 import com.example.musicsharing.navigation.AppNavigation
@@ -46,7 +47,7 @@ class NavigationActivity : ComponentActivity() {
                         GreetingsScreen()
                     }
                     composable("AppNavigation") {
-                        AppNavigation(::signOut, ::addFriend, ::getPostFeed)
+                        AppNavigation(::signOut, ::addFriend, ::getPostFeed, ::sendPostInfo)
                     }
                 }
             }
@@ -97,5 +98,25 @@ class NavigationActivity : ComponentActivity() {
             }!!
         }
 
+    }
+
+    private suspend fun sendPostInfo(post: PostPayload): Post{
+        val sharedPreferences = getSharedPreferences("login_prefs", Context.MODE_PRIVATE)
+        val userId = sharedPreferences.getInt(SharedPreferencesConstants.KEY_USER_ID, 0)
+        post.userId = userId
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = backendApi.createPost(post).execute()
+                if (response.isSuccessful && response.body() != null){
+                    response.body()
+                } else {
+                    Log.e("sendPostInfo", "sendPostInfo request failed with code: ${response.code()}")
+                    throw Exception()
+                }
+            } catch (e: Exception) {
+                Log.e("sendPostInfo", "sendPostInfo request failed: ${e.message}")
+                throw Exception()
+            }!!
+        }
     }
 }
