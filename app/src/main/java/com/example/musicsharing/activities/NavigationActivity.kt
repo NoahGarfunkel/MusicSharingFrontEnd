@@ -41,10 +41,7 @@ class NavigationActivity : ComponentActivity() {
                 ) {
                     composable("login") {
                         LoginActivity()
-                    }/*
-                    composable("posts") {
-                        SocialMediaPostScreen()
-                    }*/
+                    }
                     composable("home") {
                         GreetingsScreen()
                     }
