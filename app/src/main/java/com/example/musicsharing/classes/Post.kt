@@ -1,12 +1,12 @@
 package com.example.musicsharing.classes
 
-import java.util.Date
+import java.time.LocalDateTime
 
 data class Post(
     val artistName: String,
     val caption: String,
-    val comments: List<Comment>,
-    val createdOn: Date,
+    val comments: List<Comment>?,
+    val createdOn: LocalDateTime,
     val imageUrl: String,
     val isLikedByUser: Boolean,
     val likeTotal: Int,

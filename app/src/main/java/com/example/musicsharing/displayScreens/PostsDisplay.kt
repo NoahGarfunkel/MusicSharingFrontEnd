@@ -31,12 +31,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.musicsharing.classes.Post
+import java.time.LocalDate
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun PostItem(username: String, postContent: String) {
-    var likes by remember { mutableStateOf(0) }
-    var isLiked by remember { mutableStateOf(false) }
+fun PostItem(postContent: Post) {
+    var likes by remember { mutableStateOf(postContent.likeTotal) }
+    var isLiked by remember { mutableStateOf(postContent.isLikedByUser) }
     Card(
         modifier = Modifier
             .padding(8.dp)
@@ -59,7 +61,7 @@ fun PostItem(username: String, postContent: String) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = username,
+                    text = postContent.userName,
                     fontSize = 17.sp,
                     style = MaterialTheme.typography.bodyMedium,
                     color = Color.White,
@@ -71,7 +73,7 @@ fun PostItem(username: String, postContent: String) {
                 )
             }
             Text(
-                postContent,
+                postContent.caption,
                 style = MaterialTheme.typography.bodyLarge,
                 fontSize = 15.sp,
                 modifier = Modifier
@@ -102,6 +104,7 @@ fun PostItem(username: String, postContent: String) {
                     onClick = {
                         likes += if (isLiked) -1 else 1
                         isLiked = !isLiked
+
                     },
                     modifier = Modifier
                         .size(20.dp)
@@ -126,10 +129,23 @@ fun PostItem(username: String, postContent: String) {
 
     }
 }
-
+/*
 @RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true)
 @Composable
 fun PreviewPostItem() {
-    PostItem(username = "Morgan Weltzer", postContent = "This is a test post.")
-}
+    PostItem(username = "Morgan Weltzer", postContent = Post(
+        "Test Artist",
+        "Test Caption",
+        null,
+        LocalDate.parse("2024-04-07"),
+        "",
+        false,
+        0,
+        "",
+        "https://open.spotify.com/track/7sr74Bz3GBTNMQe1m4F5Ut",
+        "Test Track",
+        1,
+        "Alex"
+    ))
+}*/
