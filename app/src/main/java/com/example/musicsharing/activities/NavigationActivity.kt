@@ -15,7 +15,6 @@ import androidx.navigation.compose.rememberNavController
 import com.example.musicsharing.classes.FollowPayload
 import com.example.musicsharing.classes.Post
 import com.example.musicsharing.classes.Track
-import com.example.musicsharing.classes.UserInfoPayload
 import com.example.musicsharing.constants.SharedPreferencesConstants
 import com.example.musicsharing.displayScreens.GreetingsScreen
 import com.example.musicsharing.navigation.AppNavigation
@@ -27,7 +26,6 @@ import com.example.musicsharing.ui.theme.MusicSharingTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.ResponseBody
-import org.json.JSONArray
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -39,7 +37,6 @@ class NavigationActivity : ComponentActivity() {
     private val webApi = WebRetrofit().getInstance().create(WebApi::class.java)
     private lateinit var sharedPreferences: SharedPreferences
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
