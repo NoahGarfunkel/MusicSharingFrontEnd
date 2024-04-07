@@ -8,17 +8,23 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.musicsharing.classes.Post
+
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun SocialMediaPostScreen() {
-    val posts = remember { mutableStateListOf<String>() }
+fun SocialMediaPostScreen(getPostFeed: suspend () -> List<Post>) {
+    var posts = remember { mutableStateListOf<Post>() }
     var postText by remember { mutableStateOf("") }
 
-
+    LaunchedEffect(Unit) {
+        val data = getPostFeed()
+        posts.addAll(data)
+    }
 
     Column(
         modifier = Modifier
@@ -27,8 +33,8 @@ fun SocialMediaPostScreen() {
 
     ) {
         LazyColumn(modifier = Modifier.weight(1f)) {
-            itemsIndexed(posts.reversed()) { index, post ->
-                PostItem(username = "Morgan Weltzer", postContent = post)
+            itemsIndexed(posts) { index, post ->
+                PostItem(postContent = post)
             }
         }
         Row(
@@ -48,10 +54,10 @@ fun SocialMediaPostScreen() {
             Spacer(modifier = Modifier.height(8.dp))
             Button(
                 onClick = {
-                    if (postText.isNotBlank()) {
+                    /*if (postText.isNotBlank()) {
                         posts.add(postText)
                         postText = ""
-                    }
+                    }*/
                 },
                 colors = ButtonDefaults.buttonColors(Color(0xFF00889A)),
                 modifier = Modifier
@@ -63,11 +69,11 @@ fun SocialMediaPostScreen() {
     }
 }
 
-
+/*
 @RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    SocialMediaPostScreen()
-}
+    SocialMediaPostScreen(::getPostFeed)
+}*/
 
