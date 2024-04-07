@@ -23,7 +23,6 @@ import com.example.musicsharing.modals.PostCreationDialog
 @Composable
 fun SocialMediaPostScreen(getPostFeed: suspend () -> List<Post>) {
     var posts = remember { mutableStateListOf<Post>() }
-    var postText by remember { mutableStateOf("") }
     var showDialog by remember { mutableStateOf(false) }
 
 
