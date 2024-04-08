@@ -43,14 +43,10 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.window.PopupProperties
 import com.example.musicsharing.classes.PostPayload
 import com.example.musicsharing.classes.Track
-import com.example.musicsharing.classes.Post
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 @Composable
-fun PostCreationDialog(setShowDialog: (Boolean) -> Unit, sendPostInfo: suspend (PostPayload) -> Post, getSongsList: suspend (String) -> List<Track>) {
-
+fun PostCreationDialog(setShowDialog: (Boolean) -> Unit,getSongsList: suspend (String) -> List<Track>, createPostInfo: (PostPayload) -> Unit ) {
+    var song by remember { mutableStateOf("")}
     var caption by remember { mutableStateOf("") }
     val keyboardController = LocalSoftwareKeyboardController.current
 
@@ -93,7 +89,10 @@ fun PostCreationDialog(setShowDialog: (Boolean) -> Unit, sendPostInfo: suspend (
                     style = MaterialTheme.typography.bodyLarge
                 )
 
-                SongDropdownSearch(getSongsList)
+                SongDropdownSearch(getSongsList) {
+                    returnedSong ->
+                    song = returnedSong
+                }
 
                 Spacer(modifier = Modifier.padding(8.dp))
 
@@ -138,10 +137,8 @@ fun PostCreationDialog(setShowDialog: (Boolean) -> Unit, sendPostInfo: suspend (
                         colors = ButtonDefaults.buttonColors(Color(0xFF309CA9)),
                         onClick = {
                             setShowDialog(false)
-                            var post = PostPayload("",caption,"","","","",0 )
-                            CoroutineScope(Dispatchers.IO).launch {
-                                sendPostInfo(post)
-                            }
+                            var post = PostPayload("",caption,"","","",song,0 )
+                            createPostInfo(post)
                         },
                         modifier = Modifier
                             .padding(start = 50.dp, end = 10.dp)
@@ -159,7 +156,7 @@ fun PostCreationDialog(setShowDialog: (Boolean) -> Unit, sendPostInfo: suspend (
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SongDropdownSearch(getSongsList: suspend (String) -> List<Track>) {
+fun SongDropdownSearch(getSongsList: suspend (String) -> List<Track>, selectedTrack:(String) -> Unit) {
     var tracks: List<Track>
     var options by remember { mutableStateOf<List<String>>(emptyList()) }
     var song by remember { mutableStateOf("") }
@@ -176,7 +173,7 @@ fun SongDropdownSearch(getSongsList: suspend (String) -> List<Track>) {
     ) {
         TextField(
             modifier = Modifier.menuAnchor(),
-            value = song,
+            value = selectedOptionText.takeIf { it.isNotEmpty() } ?: song,
             onValueChange = { song = it },
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
             colors = ExposedDropdownMenuDefaults.textFieldColors(
@@ -202,6 +199,7 @@ fun SongDropdownSearch(getSongsList: suspend (String) -> List<Track>) {
                         onClick = {
                             selectedOptionText = selectionOption
                             expanded = false
+                            selectedTrack(selectedOptionText)
                         },
                         contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
                     )
