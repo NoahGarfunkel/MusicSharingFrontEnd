@@ -3,18 +3,17 @@ package com.example.musicsharing.activities
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.annotation.RequiresApi
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.musicsharing.classes.FollowPayload
 import com.example.musicsharing.classes.Post
 import com.example.musicsharing.classes.Track
+import com.example.musicsharing.classes.PostPayload
 import com.example.musicsharing.constants.SharedPreferencesConstants
 import com.example.musicsharing.displayScreens.GreetingsScreen
 import com.example.musicsharing.navigation.AppNavigation
@@ -55,7 +54,7 @@ class NavigationActivity : ComponentActivity() {
                         GreetingsScreen()
                     }
                     composable("AppNavigation") {
-                        AppNavigation(::signOut, ::addFriend, ::getPostFeed, ::getSongsList)
+                        AppNavigation(::signOut, ::addFriend, ::getPostFeed, ::sendPostInfo, ::getSongsList)
                     }
                 }
             }
@@ -105,13 +104,36 @@ class NavigationActivity : ComponentActivity() {
         }
     }
 
+    private suspend fun sendPostInfo(post: PostPayload): Post {
+        val sharedPreferences = getSharedPreferences("login_prefs", Context.MODE_PRIVATE)
+        val userId = sharedPreferences.getInt(SharedPreferencesConstants.KEY_USER_ID, 0)
+        post.userId = userId
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = backendApi.createPost(post).execute()
+                if (response.isSuccessful && response.body() != null) {
+                    response.body()
+                } else {
+                    Log.e(
+                        "sendPostInfo",
+                        "sendPostInfo request failed with code: ${response.code()}"
+                    )
+                    throw Exception()
+                }
+            } catch (e: Exception) {
+                Log.e("sendPostInfo", "sendPostInfo request failed: ${e.message}")
+                throw Exception()
+            }!!
+        }
+    }
+
     private suspend fun getSongsList(input: String): List<Track> {
         val tracksList = mutableListOf<Track>()
         val token = sharedPreferences.getString(SharedPreferencesConstants.KEY_TOKEN, "")
         return withContext(Dispatchers.IO) {
             try {
                 val response = webApi.getSongs("Bearer $token", input).execute()
-                if (response.isSuccessful && response.body() != null){
+                if (response.isSuccessful && response.body() != null) {
                     val jsonArray = JSONObject(response.body()!!.string()).getJSONObject("tracks").getJSONArray("items")
                     for (i in 0 until jsonArray.length()) {
                         val jsonObject = jsonArray.getJSONObject(i)
@@ -122,7 +144,10 @@ class NavigationActivity : ComponentActivity() {
                     }
                     tracksList
                 } else {
-                    Log.e("getSongsList", "getSongsList request failed with code: ${response.code()}")
+                    Log.e(
+                        "getSongsList",
+                        "getSongsList request failed with code: ${response.code()}"
+                    )
                     emptyList<Track>()
                 }
             } catch (e: Exception) {

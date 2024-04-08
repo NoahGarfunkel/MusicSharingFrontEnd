@@ -17,18 +17,19 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.musicsharing.classes.Post
 import com.example.musicsharing.classes.Track
+import com.example.musicsharing.classes.PostPayload
 import com.example.musicsharing.displayScreens.GreetingsScreen
 import com.example.musicsharing.displayScreens.SocialMediaPostScreen
 import com.example.musicsharing.displayScreens.FriendsScreen
 import profileScreen
-import kotlin.reflect.KSuspendFunction0
 
 @Composable
 fun AppNavigation(
     signOut: () -> Unit,
     addFriend: (String) -> Unit,
-    getPostFeed: KSuspendFunction0<List<Post>>,
-    getSongsList: suspend (String) -> List<Track>,
+    getPostFeed: suspend () -> List<Post>,
+    sendPostInfo: suspend (PostPayload) -> Post,
+    getSongsList: suspend (String) -> List<Track>
 ) {
     val navController : NavHostController = rememberNavController()
 
@@ -74,7 +75,7 @@ fun AppNavigation(
 
             ) {
                 composable(route = Screens.PostsScreen.name) {
-                    SocialMediaPostScreen(getPostFeed, getSongsList)
+                    SocialMediaPostScreen(getPostFeed, sendPostInfo, getSongsList)
                 }
                 composable(route = Screens.ProfileScreen.name) {
                     profileScreen(signOut)

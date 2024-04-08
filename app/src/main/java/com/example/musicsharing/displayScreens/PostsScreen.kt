@@ -11,15 +11,19 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.musicsharing.classes.Post
 import com.example.musicsharing.classes.Track
+import com.example.musicsharing.classes.PostPayload
 
 import com.example.musicsharing.modals.PostCreationDialog
 
 @Composable
-fun SocialMediaPostScreen(getPostFeed: suspend () -> List<Post>, getSongsList: suspend (String) -> List<Track>) {
+fun SocialMediaPostScreen(
+    getPostFeed: suspend () -> List<Post>,
+    sendPostInfo: suspend (PostPayload) -> Post,
+    getSongsList: suspend (String) -> List<Track>
+) {
     var posts = remember { mutableStateListOf<Post>() }
     var showDialog by remember { mutableStateOf(false) }
 
@@ -27,7 +31,6 @@ fun SocialMediaPostScreen(getPostFeed: suspend () -> List<Post>, getSongsList: s
         val data = getPostFeed()
         posts.addAll(data)
     }
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -51,11 +54,10 @@ fun SocialMediaPostScreen(getPostFeed: suspend () -> List<Post>, getSongsList: s
                 Icon(Icons.Filled.Add, contentDescription = "Add")
             }
         }
-
         if (showDialog) {
             PostCreationDialog(setShowDialog = {
                 showDialog = it
-            }, getSongsList)
+            },sendPostInfo, getSongsList)
         }
     }
 }

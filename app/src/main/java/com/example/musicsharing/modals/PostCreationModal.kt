@@ -38,15 +38,19 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.window.PopupProperties
+import com.example.musicsharing.classes.PostPayload
 import com.example.musicsharing.classes.Track
+import com.example.musicsharing.classes.Post
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @Composable
-fun PostCreationDialog(setShowDialog: (Boolean) -> Unit, getSongsList: suspend (String) -> List<Track>) {
+fun PostCreationDialog(setShowDialog: (Boolean) -> Unit, sendPostInfo: suspend (PostPayload) -> Post, getSongsList: suspend (String) -> List<Track>) {
 
     var caption by remember { mutableStateOf("") }
     var song by remember { mutableStateOf("") }
@@ -148,6 +152,10 @@ fun PostCreationDialog(setShowDialog: (Boolean) -> Unit, getSongsList: suspend (
                         colors = ButtonDefaults.buttonColors(Color(0xFF309CA9)),
                         onClick = {
                             setShowDialog(false)
+                            var post = PostPayload("",caption,"","","",song,0 )
+                            CoroutineScope(Dispatchers.IO).launch {
+                                sendPostInfo(post)
+                            }
                         },
                         modifier = Modifier
                             .padding(start = 50.dp, end = 10.dp)
