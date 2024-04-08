@@ -1,5 +1,3 @@
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.*
@@ -27,7 +25,6 @@ import com.example.musicsharing.R
 import com.example.musicsharing.modals.LogoutDialog
 
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun profileScreen(signOut: () -> Unit) {
     var name by remember { mutableStateOf("My Name")} // Initial name
@@ -64,7 +61,7 @@ fun profileScreen(signOut: () -> Unit) {
         }
 
         Image(
-            painter = painterResource(id = R.drawable.profile_picture), //make dynamic
+            painter = painterResource(id = R.drawable.apa_profile_picture), //make dynamic
             contentDescription = "Profile Picture",
             modifier = Modifier
                 .padding(top = 5.dp)
