@@ -3,14 +3,13 @@ package com.example.musicsharing.activities
 import PropertiesReader
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.util.Base64
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -61,11 +60,12 @@ class AccountCreationActivity : ComponentActivity() {
     private val webApi = WebRetrofit().getInstance().create(WebApi::class.java)
     private val backendApi = BackendRetrofit().getInstance().create(BackendApi::class.java)
     private val currentActivity = this
+    private lateinit var sharedPreferences: SharedPreferences
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        sharedPreferences = getSharedPreferences("login_prefs", Context.MODE_PRIVATE)
         PropertiesReader.init(this)
         clientID = PropertiesReader.getProperty("SPOTIFY_CLIENT_ID")
         clientSecret = PropertiesReader.getProperty("SPOTIFY_CLIENT_SECRET")
@@ -142,6 +142,7 @@ class AccountCreationActivity : ComponentActivity() {
                 if (response.isSuccessful) {
                     val responseJSON = JSONObject(response.body()!!.string())
                     val token = responseJSON.getString("access_token")
+                    sharedPreferences.edit().putString(SharedPreferencesConstants.KEY_TOKEN, token).apply()
 
                     saveUserInfo(token, userName)
                 } else {
@@ -164,7 +165,6 @@ class AccountCreationActivity : ComponentActivity() {
                     val jsonObject = JSONObject(response.body()!!.string())
                     val spotifyID = jsonObject.optString("id")
                     val userInfo = UserInfoPayload(spotifyID, userName)
-                    val sharedPreferences = getSharedPreferences("login_prefs", Context.MODE_PRIVATE)
                     if (response.body() != null) {
                         backendApi.saveUserInfo(userInfo).enqueue(object : Callback<ResponseBody> {
                             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
@@ -181,8 +181,7 @@ class AccountCreationActivity : ComponentActivity() {
                             }
 
                             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                                /*
-                                sharedPreferences.edit().putBoolean(SharedPreferencesConstants.KEY_LOGGED_IN, true).apply()
+                                /*sharedPreferences.edit().putBoolean(SharedPreferencesConstants.KEY_LOGGED_IN, true).apply()
                                 sharedPreferences.edit().putString(SharedPreferencesConstants.KEY_SPOTIFY_ID, spotifyID).apply()
                                 setUserId(spotifyID)
                                 startActivity(Intent(currentActivity, NavigationActivity::class.java))*/
@@ -202,7 +201,6 @@ class AccountCreationActivity : ComponentActivity() {
     }
 
     private fun setUserId(spotifyId: String) {
-        val sharedPreferences = getSharedPreferences("login_prefs", Context.MODE_PRIVATE)
         backendApi.getUser(spotifyId).enqueue(object : Callback<User> {
             override fun onResponse(call: Call<User>, response: Response<User>) {
                 if (response.isSuccessful && response.body() != null && response.body()!!.id != 0) {
