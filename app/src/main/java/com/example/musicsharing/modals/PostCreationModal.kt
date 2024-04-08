@@ -1,6 +1,5 @@
 package com.example.musicsharing.modals
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -49,11 +48,6 @@ fun PostCreationDialog(setShowDialog: (Boolean) -> Unit,getSongsList: suspend (S
     var song by remember { mutableStateOf("")}
     var caption by remember { mutableStateOf("") }
     val keyboardController = LocalSoftwareKeyboardController.current
-
-    LaunchedEffect(Unit){
-        val test = getSongsList("glaive")
-        Log.d("test2", test.toString())
-    }
 
     Dialog(onDismissRequest = { setShowDialog(false) }, properties = DialogProperties(
         dismissOnBackPress = true,
@@ -160,13 +154,14 @@ fun SongDropdownSearch(getSongsList: suspend (String) -> List<Track>, selectedTr
     var tracks: List<Track>
     var options by remember { mutableStateOf<List<String>>(emptyList()) }
     var song by remember { mutableStateOf("") }
+    var expanded by remember { mutableStateOf(false) }
+    var selectedOptionText by remember { mutableStateOf("") }
 
     LaunchedEffect(song) {
         tracks = getSongsList(song)
         options = tracks.map { it.name }
     }
-    var expanded by remember { mutableStateOf(false) }
-    var selectedOptionText by remember { mutableStateOf("") }
+
     ExposedDropdownMenuBox(
         expanded = expanded,
         onExpandedChange = { expanded = !expanded },
@@ -182,8 +177,7 @@ fun SongDropdownSearch(getSongsList: suspend (String) -> List<Track>, selectedTr
             ),
         )
 
-        val filteringOptions = options.filter { it.contains(song, ignoreCase = true) }
-        if (filteringOptions.isNotEmpty()) {
+        if (options.isNotEmpty()) {
             DropdownMenu(
                 modifier = Modifier
                     .background(Color.White)
@@ -193,7 +187,7 @@ fun SongDropdownSearch(getSongsList: suspend (String) -> List<Track>, selectedTr
                 expanded = expanded,
                 onDismissRequest = { expanded = false },
             ) {
-                filteringOptions.forEach { selectionOption ->
+                options.forEach { selectionOption ->
                     DropdownMenuItem(
                         text = { Text(selectionOption) },
                         onClick = {
