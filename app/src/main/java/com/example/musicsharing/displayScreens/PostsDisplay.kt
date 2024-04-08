@@ -73,11 +73,21 @@ fun PostItem(postContent: Post) {
                 )
             }
             Text(
+                "Track: " + postContent.trackName,
+                style = MaterialTheme.typography.bodyLarge,
+                fontSize = 15.sp,
+                modifier = Modifier
+                    .padding(8.dp)
+                    .weight(1f)
+                    .background(Color.White)
+
+            )
+            Text(
                 postContent.caption,
                 style = MaterialTheme.typography.bodyLarge,
                 fontSize = 15.sp,
                 modifier = Modifier
-                    .padding(10.dp)
+                    .padding(8.dp)
                     .weight(1f)
                     .background(Color.White)
 

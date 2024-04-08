@@ -17,6 +17,9 @@ import com.example.musicsharing.classes.Track
 import com.example.musicsharing.classes.PostPayload
 
 import com.example.musicsharing.modals.PostCreationDialog
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @Composable
 fun SocialMediaPostScreen(
@@ -57,7 +60,14 @@ fun SocialMediaPostScreen(
         if (showDialog) {
             PostCreationDialog(setShowDialog = {
                 showDialog = it
-            },sendPostInfo, getSongsList)
+            }, getSongsList) {
+                post ->
+                if (post != null){
+                    CoroutineScope(Dispatchers.IO).launch {
+                        posts.add(0,sendPostInfo(post))
+                    }
+                }
+            }
         }
     }
 }
