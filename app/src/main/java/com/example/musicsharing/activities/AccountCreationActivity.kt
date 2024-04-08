@@ -181,7 +181,8 @@ class AccountCreationActivity : ComponentActivity() {
                             }
 
                             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                                /*sharedPreferences.edit().putBoolean(SharedPreferencesConstants.KEY_LOGGED_IN, true).apply()
+                                /*
+                                sharedPreferences.edit().putBoolean(SharedPreferencesConstants.KEY_LOGGED_IN, true).apply()
                                 sharedPreferences.edit().putString(SharedPreferencesConstants.KEY_SPOTIFY_ID, spotifyID).apply()
                                 setUserId(spotifyID)
                                 startActivity(Intent(currentActivity, NavigationActivity::class.java))*/
