@@ -1,7 +1,6 @@
 package com.example.musicsharing.modals
 
-import android.os.Build
-import androidx.annotation.RequiresApi
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,10 +16,16 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -35,22 +40,20 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import com.example.musicsharing.classes.Post
+import androidx.compose.ui.window.PopupProperties
 import com.example.musicsharing.classes.PostPayload
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import com.example.musicsharing.classes.Track
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun PostCreationDialog(
-    setShowDialog: (Boolean) -> Unit,
-    sendPostInfo: suspend (PostPayload) -> Post
-) {
-
+fun PostCreationDialog(setShowDialog: (Boolean) -> Unit,getSongsList: suspend (String) -> List<Track>, createPostInfo: (PostPayload) -> Unit ) {
+    var song by remember { mutableStateOf("")}
     var caption by remember { mutableStateOf("") }
-    var song by remember { mutableStateOf("") }
     val keyboardController = LocalSoftwareKeyboardController.current
+
+    LaunchedEffect(Unit){
+        val test = getSongsList("glaive")
+        Log.d("test2", test.toString())
+    }
 
     Dialog(onDismissRequest = { setShowDialog(false) }, properties = DialogProperties(
         dismissOnBackPress = true,
@@ -86,17 +89,10 @@ fun PostCreationDialog(
                     style = MaterialTheme.typography.bodyLarge
                 )
 
-                Spacer(modifier = Modifier.padding(8.dp))
-
-                TextField(
-                    modifier = Modifier.fillMaxWidth(),
-                    value = song,
-                    onValueChange = { song = it },
-                    placeholder = { Text(text = "Search") },
-                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-                    keyboardActions = KeyboardActions(
-                        onDone = {keyboardController?.hide()})
-                )
+                SongDropdownSearch(getSongsList) {
+                    returnedSong ->
+                    song = returnedSong
+                }
 
                 Spacer(modifier = Modifier.padding(8.dp))
 
@@ -114,6 +110,8 @@ fun PostCreationDialog(
                     keyboardActions = KeyboardActions(
                         onDone = {keyboardController?.hide()})
                 )
+
+                Spacer(modifier = Modifier.padding(8.dp))
 
                 Row(
                     modifier = Modifier
@@ -140,9 +138,7 @@ fun PostCreationDialog(
                         onClick = {
                             setShowDialog(false)
                             var post = PostPayload("",caption,"","","",song,0 )
-                            CoroutineScope(Dispatchers.IO).launch {
-                                sendPostInfo(post)
-                            }
+                            createPostInfo(post)
                         },
                         modifier = Modifier
                             .padding(start = 50.dp, end = 10.dp)
@@ -152,6 +148,61 @@ fun PostCreationDialog(
                     ) {
                         Text(text = "Post")
                     }
+                }
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun SongDropdownSearch(getSongsList: suspend (String) -> List<Track>, selectedTrack:(String) -> Unit) {
+    var tracks: List<Track>
+    var options by remember { mutableStateOf<List<String>>(emptyList()) }
+    var song by remember { mutableStateOf("") }
+
+    LaunchedEffect(song) {
+        tracks = getSongsList(song)
+        options = tracks.map { it.name }
+    }
+    var expanded by remember { mutableStateOf(false) }
+    var selectedOptionText by remember { mutableStateOf("") }
+    ExposedDropdownMenuBox(
+        expanded = expanded,
+        onExpandedChange = { expanded = !expanded },
+    ) {
+        TextField(
+            modifier = Modifier.menuAnchor(),
+            value = selectedOptionText.takeIf { it.isNotEmpty() } ?: song,
+            onValueChange = { song = it },
+            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+            colors = ExposedDropdownMenuDefaults.textFieldColors(
+                focusedContainerColor = Color.White,
+                unfocusedContainerColor = Color.White
+            ),
+        )
+
+        val filteringOptions = options.filter { it.contains(song, ignoreCase = true) }
+        if (filteringOptions.isNotEmpty()) {
+            DropdownMenu(
+                modifier = Modifier
+                    .background(Color.White)
+                    .exposedDropdownSize(true)
+                ,
+                properties = PopupProperties(focusable = false),
+                expanded = expanded,
+                onDismissRequest = { expanded = false },
+            ) {
+                filteringOptions.forEach { selectionOption ->
+                    DropdownMenuItem(
+                        text = { Text(selectionOption) },
+                        onClick = {
+                            selectedOptionText = selectionOption
+                            expanded = false
+                            selectedTrack(selectedOptionText)
+                        },
+                        contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
+                    )
                 }
             }
         }
