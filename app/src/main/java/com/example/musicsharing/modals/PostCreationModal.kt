@@ -1,7 +1,6 @@
 package com.example.musicsharing.modals
 
-import android.os.Build
-import androidx.annotation.RequiresApi
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -53,8 +52,12 @@ import kotlinx.coroutines.launch
 fun PostCreationDialog(setShowDialog: (Boolean) -> Unit, sendPostInfo: suspend (PostPayload) -> Post, getSongsList: suspend (String) -> List<Track>) {
 
     var caption by remember { mutableStateOf("") }
-    var song by remember { mutableStateOf("") }
     val keyboardController = LocalSoftwareKeyboardController.current
+
+    LaunchedEffect(Unit){
+        val test = getSongsList("glaive")
+        Log.d("test2", test.toString())
+    }
 
     Dialog(onDismissRequest = { setShowDialog(false) }, properties = DialogProperties(
         dismissOnBackPress = true,
@@ -90,17 +93,7 @@ fun PostCreationDialog(setShowDialog: (Boolean) -> Unit, sendPostInfo: suspend (
                     style = MaterialTheme.typography.bodyLarge
                 )
 
-                Spacer(modifier = Modifier.padding(8.dp))
-
-                TextField(
-                    modifier = Modifier.fillMaxWidth(),
-                    value = song,
-                    onValueChange = { song = it },
-                    placeholder = { Text(text = "Search") },
-                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-                    keyboardActions = KeyboardActions(
-                        onDone = {keyboardController?.hide()})
-                )
+                SongDropdownSearch(getSongsList)
 
                 Spacer(modifier = Modifier.padding(8.dp))
 
@@ -120,13 +113,6 @@ fun PostCreationDialog(setShowDialog: (Boolean) -> Unit, sendPostInfo: suspend (
                 )
 
                 Spacer(modifier = Modifier.padding(8.dp))
-
-                Text(
-                    text = "Search for song",
-                    style = MaterialTheme.typography.bodyLarge
-                )
-
-                SongDropdownSearch(getSongsList)
 
                 Row(
                     modifier = Modifier
@@ -152,7 +138,7 @@ fun PostCreationDialog(setShowDialog: (Boolean) -> Unit, sendPostInfo: suspend (
                         colors = ButtonDefaults.buttonColors(Color(0xFF309CA9)),
                         onClick = {
                             setShowDialog(false)
-                            var post = PostPayload("",caption,"","","",song,0 )
+                            var post = PostPayload("",caption,"","","","",0 )
                             CoroutineScope(Dispatchers.IO).launch {
                                 sendPostInfo(post)
                             }
@@ -174,11 +160,14 @@ fun PostCreationDialog(setShowDialog: (Boolean) -> Unit, sendPostInfo: suspend (
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SongDropdownSearch(getSongsList: suspend (String) -> List<Track>) {
-    val tracks: List<Track> = mutableListOf()
-    LaunchedEffect(Unit) {
-        val tracks = getSongsList("glaive")
+    var tracks: List<Track>
+    var options by remember { mutableStateOf<List<String>>(emptyList()) }
+    var song by remember { mutableStateOf("") }
+
+    LaunchedEffect(song) {
+        tracks = getSongsList(song)
+        options = tracks.map { it.name }
     }
-    val options = tracks.map { it.name }
     var expanded by remember { mutableStateOf(false) }
     var selectedOptionText by remember { mutableStateOf("") }
     ExposedDropdownMenuBox(
@@ -186,19 +175,17 @@ fun SongDropdownSearch(getSongsList: suspend (String) -> List<Track>) {
         onExpandedChange = { expanded = !expanded },
     ) {
         TextField(
-            // The `menuAnchor` modifier must be passed to the text field for correctness.
             modifier = Modifier.menuAnchor(),
-            value = selectedOptionText,
-            onValueChange = { selectedOptionText = it },
-            label = { Text("Label") },
+            value = song,
+            onValueChange = { song = it },
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
             colors = ExposedDropdownMenuDefaults.textFieldColors(
                 focusedContainerColor = Color.White,
                 unfocusedContainerColor = Color.White
             ),
         )
-        // filter options based on text field value
-        val filteringOptions = options.filter { it.contains(selectedOptionText, ignoreCase = true) }
+
+        val filteringOptions = options.filter { it.contains(song, ignoreCase = true) }
         if (filteringOptions.isNotEmpty()) {
             DropdownMenu(
                 modifier = Modifier

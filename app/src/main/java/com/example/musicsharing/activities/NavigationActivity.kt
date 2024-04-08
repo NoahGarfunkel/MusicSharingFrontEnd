@@ -139,21 +139,19 @@ class NavigationActivity : ComponentActivity() {
                         val jsonObject = jsonArray.getJSONObject(i)
                         val trackName = jsonObject.optString("name")
                         val trackID = jsonObject.optString("id")
-                        val track = Track(trackName, trackID)
+                        val track = Track(trackID, trackName)
                         tracksList.add(track)
                     }
+                    Log.d("test", tracksList.toString())
                     tracksList
                 } else {
-                    Log.e(
-                        "getSongsList",
-                        "getSongsList request failed with code: ${response.code()}"
-                    )
+                    Log.e("getSongsList", "getSongsList request failed with code: ${response.code()}")
                     emptyList<Track>()
                 }
             } catch (e: Exception) {
                 Log.e("getSongsList", "getSongsList request failed: ${e.message}")
                 emptyList<Track>()
-            }!!
+            }
         }
     }
 }
