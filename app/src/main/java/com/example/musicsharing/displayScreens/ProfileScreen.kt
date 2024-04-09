@@ -28,7 +28,6 @@ import com.example.musicsharing.modals.LogoutDialog
 @Composable
 fun profileScreen(signOut: () -> Unit, spotifyId: String?, userName: String?) {
 
-    var name by remember { mutableStateOf(spotifyId)}
     var showDialog by remember { mutableStateOf(false) }
 
     Column(
@@ -103,7 +102,7 @@ fun profileScreen(signOut: () -> Unit, spotifyId: String?, userName: String?) {
                 color = Color.White
             )
 
-            name?.let {
+            spotifyId?.let {
                 Text(
                     text = it,
                     style = MaterialTheme.typography.bodyLarge,
