@@ -106,7 +106,7 @@ fun profileScreen(signOut: () -> Unit, spotifyId: String?, userName: String?) {
                 Text(
                     text = it,
                     style = MaterialTheme.typography.bodyLarge,
-                    fontSize = 17.sp,
+                    fontSize = 19.sp,
                     color = Color(0xFFFBFFDC),
                     modifier = Modifier
                         .padding(top = 85.dp)
