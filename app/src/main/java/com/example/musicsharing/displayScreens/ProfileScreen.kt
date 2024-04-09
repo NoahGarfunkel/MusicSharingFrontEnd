@@ -1,3 +1,4 @@
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.*
@@ -5,7 +6,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -26,8 +26,9 @@ import com.example.musicsharing.modals.LogoutDialog
 
 
 @Composable
-fun profileScreen(signOut: () -> Unit) {
-    var name by remember { mutableStateOf("My Name")} // Initial name
+fun profileScreen(signOut: () -> Unit, spotifyId: String?, userName: String?) {
+
+    var name by remember { mutableStateOf(spotifyId)}
     var showDialog by remember { mutableStateOf(false) }
 
     Column(
@@ -78,16 +79,20 @@ fun profileScreen(signOut: () -> Unit) {
                 .size(800.dp)
         )
         {
-            Text(
-                text = "Username",
-                style = MaterialTheme.typography.headlineMedium,
-                color = Color(0xFFFBFFDC),
-                fontSize = 38.sp,
-                modifier = Modifier
-                    .padding(top = 25.dp)
-                    .align(Alignment.TopCenter)
+            if (userName != null) {
+                Text(
+                    text = userName,
+                    style = MaterialTheme.typography.headlineMedium,
+                    color = Color(0xFFFBFFDC),
+                    fontSize = 38.sp,
+                    modifier = Modifier
+                        .padding(top = 25.dp)
+                        .align(Alignment.TopCenter)
 
-            )
+                )
+            }
+
+
 
             HorizontalDivider(
                 modifier = Modifier
@@ -98,16 +103,18 @@ fun profileScreen(signOut: () -> Unit) {
                 color = Color.White
             )
 
-            Text(
-                text = name,
-                style = MaterialTheme.typography.bodyLarge,
-                fontSize = 17.sp,
-                color = Color(0xFFFBFFDC),
-                modifier = Modifier
-                    .padding(top = 85.dp)
-                    .align(Alignment.TopCenter)
+            name?.let {
+                Text(
+                    text = it,
+                    style = MaterialTheme.typography.bodyLarge,
+                    fontSize = 17.sp,
+                    color = Color(0xFFFBFFDC),
+                    modifier = Modifier
+                        .padding(top = 85.dp)
+                        .align(Alignment.TopCenter)
 
-            )
+                )
+            }
 
             Button(
                 onClick = {

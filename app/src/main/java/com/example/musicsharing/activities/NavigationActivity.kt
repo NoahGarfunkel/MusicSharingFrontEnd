@@ -40,6 +40,8 @@ class NavigationActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         sharedPreferences = getSharedPreferences("login_prefs", Context.MODE_PRIVATE)
+        val spotifyId = sharedPreferences.getString("spotifyId", "")
+        val userName = sharedPreferences.getString("userName", "")
 
         setContent {
             MusicSharingTheme {
@@ -54,7 +56,7 @@ class NavigationActivity : ComponentActivity() {
                         GreetingsScreen()
                     }
                     composable("AppNavigation") {
-                        AppNavigation(::signOut, ::addFriend, ::getPostFeed, ::sendPostInfo, ::getSongsList)
+                        AppNavigation(::signOut, ::addFriend, ::getPostFeed, ::sendPostInfo, ::getSongsList, spotifyId, userName)
                     }
                 }
             }
