@@ -173,6 +173,7 @@ class AccountCreationActivity : ComponentActivity() {
                                 if (response.isSuccessful) {
                                     sharedPreferences.edit().putBoolean(SharedPreferencesConstants.KEY_LOGGED_IN, true).apply()
                                     sharedPreferences.edit().putString(SharedPreferencesConstants.KEY_SPOTIFY_ID, spotifyID).apply()
+                                    sharedPreferences.edit().putString(SharedPreferencesConstants.KEY_USER_NAME, userName).apply()
                                     setUserId(spotifyID)
                                     startActivity(Intent(currentActivity, NavigationActivity::class.java))
 
