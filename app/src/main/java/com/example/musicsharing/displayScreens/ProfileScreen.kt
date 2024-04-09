@@ -102,9 +102,9 @@ fun profileScreen(signOut: () -> Unit, spotifyId: String?, userName: String?) {
                 color = Color.White
             )
 
-            spotifyId?.let {
+            if (spotifyId != null){
                 Text(
-                    text = it,
+                    text = spotifyId,
                     style = MaterialTheme.typography.bodyLarge,
                     fontSize = 19.sp,
                     color = Color(0xFFFBFFDC),
