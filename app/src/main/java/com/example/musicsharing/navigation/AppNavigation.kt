@@ -29,7 +29,9 @@ fun AppNavigation(
     addFriend: (String) -> Unit,
     getPostFeed: suspend () -> List<Post>,
     sendPostInfo: suspend (PostPayload) -> Post,
-    getSongsList: suspend (String) -> List<Track>
+    getSongsList: suspend (String) -> List<Track>,
+    spotifyId: String?,
+    userName: String?
 ) {
     val navController : NavHostController = rememberNavController()
 
@@ -78,7 +80,7 @@ fun AppNavigation(
                     SocialMediaPostScreen(getPostFeed, sendPostInfo, getSongsList)
                 }
                 composable(route = Screens.ProfileScreen.name) {
-                    profileScreen(signOut)
+                    profileScreen(signOut, spotifyId, userName)
                 }
                 composable(route = Screens.GreetingsScreen.name) {
                     GreetingsScreen()
