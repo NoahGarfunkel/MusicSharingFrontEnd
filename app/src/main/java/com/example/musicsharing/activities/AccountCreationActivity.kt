@@ -142,7 +142,9 @@ class AccountCreationActivity : ComponentActivity() {
                 if (response.isSuccessful) {
                     val responseJSON = JSONObject(response.body()!!.string())
                     val token = responseJSON.getString("access_token")
+                    val refreshToken = responseJSON.getString("refresh_token")
                     sharedPreferences.edit().putString(SharedPreferencesConstants.KEY_TOKEN, token).apply()
+                    sharedPreferences.edit().putString(SharedPreferencesConstants.KEY_REFRESH_TOKEN, refreshToken).apply()
 
                     saveUserInfo(token, userName)
                 } else {

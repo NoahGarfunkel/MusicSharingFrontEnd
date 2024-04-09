@@ -1,9 +1,11 @@
 package com.example.musicsharing.modals
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -29,7 +31,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -66,7 +67,9 @@ fun PostCreationDialog(setShowDialog: (Boolean) -> Unit,getSongsList: suspend (S
             Column(
                 modifier = Modifier
                     .background(Color.White)
-                    .height(1000.dp)
+                    .fillMaxSize()
+                    .padding(8.dp)
+                    .clip(RoundedCornerShape(10.dp))
 
             ) {
 
@@ -105,13 +108,13 @@ fun PostCreationDialog(setShowDialog: (Boolean) -> Unit,getSongsList: suspend (S
                         onDone = {keyboardController?.hide()})
                 )
 
-                Spacer(modifier = Modifier.padding(8.dp))
+                Spacer(modifier = Modifier.weight(1f))
 
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(bottom = 8.dp),
-                    verticalAlignment = Alignment.Bottom
+                    horizontalArrangement = Arrangement.End
                 ) {
                     Button(
                         colors = ButtonDefaults.buttonColors(Color(0xFF309CA9)),
@@ -119,7 +122,7 @@ fun PostCreationDialog(setShowDialog: (Boolean) -> Unit,getSongsList: suspend (S
                             setShowDialog(false)
                         },
                         modifier = Modifier
-                            .padding(start = 20.dp, top = 200.dp, end = 10.dp)
+                            .padding(end = 8.dp)
                             .height(35.dp)
                             .width(100.dp)
 
@@ -135,7 +138,6 @@ fun PostCreationDialog(setShowDialog: (Boolean) -> Unit,getSongsList: suspend (S
                             createPostInfo(post)
                         },
                         modifier = Modifier
-                            .padding(start = 50.dp, end = 10.dp)
                             .height(35.dp)
                             .width(100.dp)
 
@@ -158,8 +160,13 @@ fun SongDropdownSearch(getSongsList: suspend (String) -> List<Track>, selectedTr
     var selectedOptionText by remember { mutableStateOf("") }
 
     LaunchedEffect(song) {
-        tracks = getSongsList(song)
-        options = tracks.map { it.name }
+       if (song != "") {
+            tracks = getSongsList(song)
+            options = tracks.map { it.name }
+        }
+        else {
+            options = emptyList()
+        }
     }
 
     ExposedDropdownMenuBox(
