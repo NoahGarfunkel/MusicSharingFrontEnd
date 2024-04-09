@@ -17,6 +17,7 @@ import com.example.musicsharing.classes.PostPayload
 import com.example.musicsharing.constants.SharedPreferencesConstants
 import com.example.musicsharing.displayScreens.GreetingsScreen
 import com.example.musicsharing.navigation.AppNavigation
+import com.example.musicsharing.retrofit.AccountsRetrofit
 import com.example.musicsharing.retrofit.BackendRetrofit
 import com.example.musicsharing.retrofit.WebRetrofit
 import com.example.musicsharing.retrofit.api.BackendApi
@@ -34,7 +35,9 @@ import retrofit2.Response
 class NavigationActivity : ComponentActivity() {
     private val backendApi = BackendRetrofit().getInstance().create(BackendApi::class.java)
     private val webApi = WebRetrofit().getInstance().create(WebApi::class.java)
+    private val accountsRetrofit = AccountsRetrofit()
     private lateinit var sharedPreferences: SharedPreferences
+    private val context = this
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -142,11 +145,16 @@ class NavigationActivity : ComponentActivity() {
                         val track = Track(trackID, trackName)
                         tracksList.add(track)
                     }
-                    Log.d("test", tracksList.toString())
                     tracksList
                 } else {
-                    Log.e("getSongsList", "getSongsList request failed with code: ${response.code()}")
-                    emptyList<Track>()
+                    if(response.code() == 401){
+                        accountsRetrofit.updateToken(sharedPreferences, context)
+                        getSongsList(input)
+                    }
+                    else{
+                        Log.e("getSongsList", "getSongsList request failed with code: ${response.code()}")
+                        emptyList<Track>()
+                    }
                 }
             } catch (e: Exception) {
                 Log.e("getSongsList", "getSongsList request failed: ${e.message}")

@@ -21,7 +21,14 @@ interface AccountsApi {
                  @Header("Content-Type") contentType: String,
                  @Field(("grant_type")) grantType:String,
                  @Field(("code")) code:String,
-                 @Field(("redirect_uri")) redirect:String,
+                 @Field(("redirect_uri")) redirect:String
                  ): Call<ResponseBody>
 
+    @FormUrlEncoded
+    @POST("api/token")
+    fun getNewToken(@Header("Authorization") authorization: String,
+                    @Header("Content-Type") contentType: String,
+                    @Field(("grant_type")) grantType:String,
+                    @Field(("refresh_token")) refreshToken:String
+    ): Call<ResponseBody>
 }

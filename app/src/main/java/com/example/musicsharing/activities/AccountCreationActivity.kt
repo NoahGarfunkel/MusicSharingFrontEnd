@@ -142,7 +142,9 @@ class AccountCreationActivity : ComponentActivity() {
                 if (response.isSuccessful) {
                     val responseJSON = JSONObject(response.body()!!.string())
                     val token = responseJSON.getString("access_token")
+                    val refreshToken = responseJSON.getString("refresh_token")
                     sharedPreferences.edit().putString(SharedPreferencesConstants.KEY_TOKEN, token).apply()
+                    sharedPreferences.edit().putString(SharedPreferencesConstants.KEY_REFRESH_TOKEN, refreshToken).apply()
 
                     saveUserInfo(token, userName)
                 } else {
@@ -181,10 +183,10 @@ class AccountCreationActivity : ComponentActivity() {
                             }
 
                             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                                /*sharedPreferences.edit().putBoolean(SharedPreferencesConstants.KEY_LOGGED_IN, true).apply()
+                                sharedPreferences.edit().putBoolean(SharedPreferencesConstants.KEY_LOGGED_IN, true).apply()
                                 sharedPreferences.edit().putString(SharedPreferencesConstants.KEY_SPOTIFY_ID, spotifyID).apply()
                                 setUserId(spotifyID)
-                                startActivity(Intent(currentActivity, NavigationActivity::class.java))*/
+                                startActivity(Intent(currentActivity, NavigationActivity::class.java))
                                 Log.e("saveUserInfo", "saveUserInfo request failed: ${t.message}")
                             }
                         })
